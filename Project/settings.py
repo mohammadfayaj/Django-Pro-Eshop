@@ -70,9 +70,9 @@ CSRF_COOKIE_SECURE = True
 SECURE_SSL_REDIRECT = True
 
 # HSTS settings
-SECURE_HSTS_SECONDS = 31536000 # 1 Year
-SECURE_HSTS_PRELOAD = True
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+#SECURE_HSTS_SECONDS = 31536000 # 1 Year
+#SECURE_HSTS_PRELOAD = True
+#SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 
 # Third pary app settings
@@ -94,9 +94,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+#STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
