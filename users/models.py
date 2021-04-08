@@ -47,7 +47,7 @@ class Deliverycharges(models.Model): #city
 
 class Address (models.Model): #persion
     users = models.ForeignKey(User, on_delete=models.CASCADE,)
-    devision = models.ForeignKey(Devision, on_delete=models.CASCADE,)
+    devision = models.ForeignKey(Devision, on_delete=models.CASCADE,null=True)
     deliverycharges = models.ForeignKey(Deliverycharges, on_delete=models.CASCADE, blank=True, null=True)
 
     phone_number = PhoneNumberField(help_text='Please Enter Your Valid Phone Number.',)
