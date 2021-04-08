@@ -5,7 +5,26 @@ from decouple import config
 import os
 
 
-DATABASES = { 'default': dj_database_url.config(default='postgres://lsscltjategzap:bc9cd7672178cecc2a9b6b4cf99056009ad31ed262903dce93c9b34deac209a3@ec2-107-22-245-82.compute-1.amazonaws.com:5432/d8duuiekt3r7ji') }
+DATABASES = { 'default': dj_database_url.config(conn_max_age=600, ssl_require=True) }
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+             'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+        },
+    },
+}
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -70,9 +89,9 @@ CSRF_COOKIE_SECURE = True
 SECURE_SSL_REDIRECT = True
 
 # HSTS settings
-#SECURE_HSTS_SECONDS = 31536000 # 1 Year
-#SECURE_HSTS_PRELOAD = True
-#SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_SECONDS = 60
+SECURE_HSTS_PRELOAD = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 
 # Third pary app settings
@@ -148,6 +167,7 @@ TEMPLATES = [
                 'social_django.context_processors.login_redirect', #social_auth
                 
             ],
+             'debug': DEBUG,
 
         },
     },
