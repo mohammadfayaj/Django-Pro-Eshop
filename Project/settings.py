@@ -59,13 +59,13 @@ WSGI_APPLICATION = 'Project.wsgi.application'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ['103.114.98.248', '*',] # list of domains name
+ALLOWED_HOSTS = ['*'] # list of domains name
 
 
 # HTTPS settings
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = False
+SECURE_SSL_REDIRECT = True
 
 # HSTS settings
 SECURE_HSTS_SECONDS = 31536000 # 1 Year
