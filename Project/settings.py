@@ -93,7 +93,7 @@ MEDIA_URL = '/media/'
 
 STATIC_URL = '/static/'
 # STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -176,16 +176,16 @@ REST_FRAMEWORK = {
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'eshop',
-        'USER': config('USER'),
-        'PASSWORD': config('PASSWORD'),
-        'HOST': 'localhost',
-        'PORT': '3306',
-    }
-}
+#DATABASES = {
+   # 'default': {
+        #'ENGINE': 'django.db.backends.mysql',
+        #'NAME': 'eshop',
+        #'USER': config('USER'),
+        #'PASSWORD': config('PASSWORD'),
+        #'HOST': 'localhost',
+        #'PORT': '3306',
+    #}
+#}
 
 
 # Password validation
