@@ -7,6 +7,8 @@ import os
 
 DATABASES = { 'default': dj_database_url.config() }
 
+import os
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -18,6 +20,13 @@ LOGGING = {
     'root': {
         'handlers': ['console'],
         'level': 'WARNING',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': False,
+        },
     },
 }
 
