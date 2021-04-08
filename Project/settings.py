@@ -17,11 +17,9 @@ LOGGING = {
             'class': 'logging.StreamHandler',
         },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-             'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
-        },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
     },
 }
 
@@ -77,7 +75,7 @@ INSTALLED_APPS = [
 
 ROOT_URLCONF = 'Project.urls'
 WSGI_APPLICATION = 'Project.wsgi.application'
-# INTERNAL_IPS = ['127.0.0.1',]
+INTERNAL_IPS = ['127.0.0.1',]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
