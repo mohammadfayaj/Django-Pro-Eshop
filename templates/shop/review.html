@@ -1,0 +1,165 @@
+{% load static %}
+{% load mptt_tags %}
+{% load crispy_forms_tags %}
+
+{% block review %}
+
+{% if user.is_authenticated %}
+<div class="container mt-5 review p-3 shadow" id="myDIV" style="width: 100%;">
+<form id="myForm" method="POST" enctype='multipart/form-data'>
+    {{form|crispy}}
+  	{% csrf_token %}
+  <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+</form>
+</div>
+{% else %}
+
+<P class='text-center h5 mt-3 ui red message'>Please Login To Review <a href="{% url 'users:users-login' %}"><span class="ui horizontal label green">Login</span></span></a> </P>
+
+{% endif %}
+
+<style type="text/css"> 
+
+.review{ display: all; -webkit-box-shadow:0px 0px 4px
+0px rgba(227, 216, 216, 0.98); -moz-box-shadow:0px 0px 4px 0px rgba(227, 216,
+216, 0.98); box-shadow:0px 0px 4px 0px rgba(227, 216, 216, 0.98);}
+
+#id_image {
+  margin-top: 1rem;
+}
+
+</style>
+
+
+<div class="container mt-5" style="width: 100%;">
+
+
+{% recursetree review %}
+    
+	<div id="{{ node.id }}" class="my-2 p-2 review" style="border: #ecebeb solid 1px;">
+		<img src="{{ user.profile.file.url }}" class="media-object" style="width:40px">
+		<small class="text-primary">{{ node.user.username }}</small>
+		<small class="text-muted" style="float: right;">{{ node.created_date }}</small>
+
+    <div class="dropdown">
+    <a class="text-danger" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="float: right;">
+      <i class="fas fa-ellipsis-v"></i>
+    </a>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <a class="dropdown-item" href="{% url 'shop:review_update' node.id %}">Edit</a>
+      <a class="dropdown-item" href="{% url 'shop:review_delete' node.id %}">Delete</a>
+    </div>
+
+    </div>
+
+    <div class="d-flex justify-content-between mt-2"> <p class="text-dark">{{ node.review}}</p></div>
+    
+
+
+    <div class="mt-1">
+    {% if not node.image %}
+         <p></p>
+    {% else  %}
+    <img src=" {{ node.image.url }}" class="media-object" style="height: 140px">                   
+    {% endif %}
+    </div>
+
+
+
+		{% if node.level < 3 %}
+		<button class="button btn btn-sm btn-primary mt-3" onclick="myFunction({{ node.id }})">Reply</button>
+		{% endif %}
+	 </div>
+
+
+	{% if not node.is_leaf_node %}
+    {% for child in node.children.all %}
+
+    <div  class="children pl-5 pl-md-5 mt-4 mb-4" style="border: #ecebeb solid 1px;">
+    <img src="{{ user.profile.file.url }}" class="media-object" style="width:40px">
+    <small class="text-primary">{{ child.user.username }}</small>
+    <small class="text-muted" style="float: right;">{{ child.created_date }}</small>
+    
+    <div class="dropdown">
+      <a class="text-danger" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="float: right;">
+        <i class="fas fa-ellipsis-v"></i>
+      </a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="{% url 'shop:review_update' child.id %}">Edit</a>
+        <a class="dropdown-item" href="{% url 'shop:review_delete' child.id %}">Delete</a>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between mt-2"> <p class="text-dark">{{ child.review}}</p></div>
+
+    <div class="mt-1">
+    {% if not child.image %}
+         <p></p>
+    {% else  %}
+    <img src=" {{ child.image.url }}" class="media-object" style="height: 340px">                   
+    {% endif %}
+    </div>
+
+    </div>
+
+    {% endfor %}
+	{% endif %}
+
+{% endrecursetree %}
+
+  {% if review.count == 15 %}
+    <a href="{% url 'shop:review_all' %}" class="btn btn-outline-danger btn-sm mt-5" href="">Show All Reviews</a>
+  {% endif %}
+
+</div>
+
+
+{% endblock %}
+
+
+
+<script>
+
+  function formExit() {
+    document.getElementById("newForm").remove();
+  }
+
+  function myFunction(id) {
+    if (document.contains(document.getElementById("newForm"))) {
+      document.getElementById("newForm").remove();
+    }
+
+    var d1 = document.getElementById(id);
+    d1.insertAdjacentHTML('afterend',
+     '<form id="newForm" class="form-insert py-2 container review" method="post" style="width: 70%;"> \
+        <div class="d-flex justify-content-between"><h2></h2><div><button type="button" class="btn btn-lg" onclick="formExit()""><span aria-hidden="true">&times;</span></button></div></div> \
+        <label for="id_review" class="">Reply Review</label> \
+        <input type="text" name="review" class="col-sm-12 textinput textInput form-control" maxlength="600" required="" id="id_review"> \
+        <input type="file" name="image" accept="image/*" class="clearablefileinput form-control-file" id="id_image"> \
+        <select name="parent" class="d-none" id="id_parentt"> \
+        <option value="' + id + '" selected="' + id + '"></option> \
+        </select> \
+        {% csrf_token %} \
+        <button type="submit" class="btn btn-primary btn-sm mt-3">Submit</button> \
+      </form>');
+
+  }
+
+  $('#myForm').trigger("reset");
+
+
+// after form submit saty in the same Scrolling
+$(document).ready(function () {
+
+    if (localStorage.getItem("#myForm") != null) {
+        $(window).scrollTop(localStorage.getItem("#myForm"));
+    }
+
+    $(window).on("scroll", function() {
+        localStorage.setItem("#myForm", $(window).scrollTop());
+    });
+
+  });
+// end...
+
+</script>

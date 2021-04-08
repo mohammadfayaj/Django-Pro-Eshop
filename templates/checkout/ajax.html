@@ -1,0 +1,28 @@
+{% load blog_template_tags %}
+
+ {% for i in deliverycharges %}
+
+ <select name="deliverycharges" class="select form-control valied" style="display: none;">
+	<option value="{{ i.id }}">{{ i.delivery_charge }}</option>
+</select>
+
+  <div class="row mt-3">
+    <div class="col">
+        <p>Delivery Charge</p>
+     </div>
+    <div class="col">
+       <span class="text-danger font-weight-bold" style="float: right;">{{ i.delivery_charge }}</span>
+    </div>
+   </div><hr>
+<!-- ============================= -->
+  <div class="row mt-3">
+    <div class="col">
+        <p>Subtotal</p>
+     </div>
+    <div class="col">
+ <span class="text-danger font-weight-bold" style="float: right;">{{ order.show_cart_list_total|subtract:i.delivery_charge }}</span>
+    </div>
+  </div>
+
+ {% endfor %}
+

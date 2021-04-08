@@ -1,0 +1,10 @@
+{% extends 'base/base_navbar.html' %}
+{% block content %}
+    <div class="text-center ui" style="margin-top: 16rem;">
+        <h2 class="text-danger" >You have been logged out</h2>
+        <small>
+            <a  class="text-primary" href="{% url 'users:users-login' %}"><span class="ui green horizontal label">Log In Again</span></a>
+        </small>
+    	<div style="margin-top: 10rem;"></div>
+    </div>
+{% endblock content %}

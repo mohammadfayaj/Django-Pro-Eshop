@@ -1,0 +1,110 @@
+{% extends "admin/index.html" %}
+{% load cart_template_tags %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+
+<script type="text/javascript" src="{% static 'js/Chart v2.9.4.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/admin_style.css' %}" type="text/css">
+
+{% endblock %}
+
+{% block sidebar %}
+    {{block.super}}
+
+    <div id="chart_content">
+        <canvas id="myChart" width="600" height="600"></canvas>
+    </div>
+
+    <script>
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    Chart.defaults.global.defaultFontColor = 'white';
+    // Chart.defaults.global.tooltips = false;
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Visitor', 'Product', 'Order', 'Cash On deliverys', 'Payment'],
+            datasets: [{
+                label: '# Count',
+                data: [ 
+                        {{ request.user|users }},
+                        {{ request.user|products }}, 
+                        {{ request.user|orders }},
+                        {{ request.user|cash_on_deliverys }}, 
+                        {{ request.user|payments }}, 
+                         
+                      ],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132,  8 )',
+                    'rgba(54, 162, 235,  8 )',
+                    'rgba(255, 206, 86,  8 )',
+                    'rgba(75, 192, 192,  8 )',
+                    'rgba(153, 102, 255, 8 )',
+                    'rgba(255, 159, 64,  8 )'
+                ],
+                borderWidth: 2
+            }]
+        },
+
+        options: {
+
+            responsive: true,
+            title: {
+              display: true,
+              {% current_time "%Y-%m-%d" as the_time %}
+              text: 'Ognies Shop {{the_time}} Chart'
+            },
+
+            tooltips: {
+              mode: 'label',
+            },
+
+            hover: {
+              mode: 'nearest',
+              intersect: true
+            },
+
+            scales: {
+              xAxes: [{
+                display: true,
+                gridLines: {
+                  // display: false,
+                  color: "#2b3647"
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Site Performance'
+                }
+              }],
+
+              yAxes: [{
+                display: true,
+                gridLines: {
+                  // display: false
+                  color: "#2b3647",
+               
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Value'
+                }
+              }]
+            }
+          }
+
+    });
+
+</script>
+
+
+{% endblock %}

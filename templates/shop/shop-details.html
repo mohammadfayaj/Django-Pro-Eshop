@@ -1,0 +1,326 @@
+{% extends 'base/base_navbar.html' %}
+{% load static %}
+{% load ratings %}
+{% load crispy_forms_tags %}
+{% load cart_template_tags %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
+<script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+
+
+<!-- Product Details Section Begin -->
+<section class="product-details spad">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <div class="product__details__pic">
+                <div class="product__details__pic__item">
+                    <img class="product__details__pic__item--large" 
+                        src=" {{ product_details.images.url }} " alt="">
+                </div>
+
+
+
+                <div class="product__details__pic__slider owl-carousel">
+                    {% if not product_details.images_1 %}
+                         <p>Image Not Found</p>
+                    {% else  %}
+                    <img src=" {{ product_details.images_1.url }}" alt="">
+                    <img src=" {{ product_details.images_2.url }}" alt="">
+                    <img src=" {{ product_details.images_3.url }}" alt="">                    
+                    {% endif %}
+        
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-6 col-md-6">
+            <div class="product__details__text">
+                <h3>{{product_details.titel}}</h3>
+                <div class="product__details__rating">
+                    {% ratings product_details %}  <!-- #came cart/cart_template_tags.py -->
+
+
+                    <!-- product_details its a context variable form ProductItem Model and reviews_set(reviews its a foreignkey)(_set django convention) -->
+                    <a class="jumper" href="#myForm"><span>({{ product_details.reviews_set.all|length }} reviews)</span></a>
+                    <!-- href content the from id! this id came form review.html -->
+
+
+                </div>
+                <div class="product__details__price">${{product_details.price}}</div>
+                <!-- <div class="product__details__quantity">
+                    <div class="quantity">
+                   we will add quantity
+                    </div>
+                </div> -->
+                 
+
+                {% if product_details.quantity < 2 %}
+                <a class="primary-btn ml-2" href="{%  url 'cart:add_wish_list' product_details.slug  %}"><span class="icon_heart_alt"></span> Add to Wish List</a>
+                <p class="small text-mute">Sorry Product Isn't available</p>
+                {% else %}
+                <a href="{% url 'cart:add_to_cart' product_details.slug %}" class="primary-btn">ADD TO CARD</a>
+                {% endif %}
+                
+            <form class="ui form mt-2" action="" method="post" id='size_form'>
+                {% csrf_token %}
+                <div class="row">
+                    {% if models.is_it_Shoes is True %}
+                    <div class="col">
+                        <label for="">Size</label>
+                        <select id="shoes_size_id" class="ui fluid dropdown" style="width: 30%;">
+                            <option value="">------</option>
+                            <option value="36">36</option>
+                            <option value="37">37</option>
+                            <option value="38">38</option>
+                            <option value="39">39</option>
+                            <option value="40">40</option>
+                            <option value="41">41</option>
+                            <option value="42">42</option>
+                            <option value="43">43</option>
+                        </select>
+                    </div>
+                    {% endif %}
+                    {% if models.is_it_shirt is True %}
+                    <div class="col">
+                        <label for="">Size</label>
+                        <select id="shirt_size_id" class="ui fluid dropdown" style="width: 30%;">
+                            <option id="shirt_size_m" value="">------</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    {% endif %}
+                    {% if models.is_it_pant is True %}
+                    <div class="col">
+                        <label for="">Size</label>
+                        <select id="pant_size_id" class="ui fluid dropdown" style="width: 30%;">
+                            <option value="">------</option>
+                            <option value="28">28</option>
+                            <option value="30">30</option>
+                            <option value="32">32</option>
+                            <option value="34">34</option>
+                            <option value="36">36</option>
+                            <option value="38">38</option>
+                        </select>
+                    </div>
+                    {% endif %}
+
+                </div>
+                    <input id="size_submit_id" class="btn btn-sm btn-success mt-3" type='submit' value='Test button' style="display: none;"/>
+                    <div id='message'></div>
+            </form>
+            <ul>
+                    {% if product_details.quantity < 2 %}
+                    <li><b>Availability</b> <span>Out of stock</span></li>
+                    {% else %}
+                    <li><b>Availability</b> <span>{{product_details.availability}}</span></li>
+                    {% endif %}
+                    {% if product_details.brand is not null %}
+                    <li><b>Brand</b> <span>{{product_details.brand}}</samp></span></li>
+                    {% else %}
+                    <li><b>Brand</b> <span>Not Specify</samp></span></li>
+                    {% endif %}
+
+                    <li><b>Colors</b> <span>{{ product_details.colors }}</span></li>
+
+
+                    <li><b>Share on</b>
+                        <div class="share">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                        </div>
+                    </li>
+
+
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+</section>
+<!-- Product Details Section End -->
+
+
+<!-- tab section start -->
+<section class="container">
+    <div class="col-lg-12">
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active text-danger" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Product Review</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-danger" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Product Discriptions</a>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+
+    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+    {% block review %}
+    {% include 'shop/review.html' %}
+    {% endblock %}
+    </div>
+
+    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+    <p>{{product_details.description | safe | linebreaks}}</p>
+    </div>
+
+    <!-- <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">yghjhb</div> -->
+    </div>
+
+    </div>
+</section>
+<!-- tab section end -->
+
+
+<!-- Related Product Section Begin -->
+<section class="mt-5">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="section-title related__product__title">
+                <h2 class="text-dark">Related Product</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        {% for i in related_product %}
+        {% if forloop.counter < 30 %}
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="product__item">
+                <div class="product__item__pic set-bg" data-setbg="{{i.images.url}}">
+                    <ul class="product__item__pic__hover">
+                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                    </ul>
+                </div>
+                <div class="product__item__text">
+                    <h6><a href="#">{{i.titel}}</a></h6>
+                    <h5>{{i.price}}</h5>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <a class="btn btn-outline-danger mt-4 mb-5" href="{% url 'shop:product_list' %}">Visit Shop Now</a>
+
+</div>
+
+</section>
+<!-- Related Product Section End -->
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+    
+// staty same Tab
+$(document).ready(function(){
+    $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+        localStorage.setItem('activeTab', $(e.target).attr('href'));
+    });
+    var activeTab = localStorage.getItem('activeTab');
+    if(activeTab){
+        $('#myTab a[href="' + activeTab + '"]').tab('show');
+    }
+});
+
+//scroll down to myform
+$(document).ready(function() {
+  $(".jumper").on("click", function( e ) {
+
+    e.preventDefault();
+
+    $("body, html").animate({ 
+      scrollTop: $( $(this).attr('href') ).offset().top 
+    }, 600);
+
+  });
+});
+
+
+    // getCookie Provided by Django in the Official Docs
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+
+$(document).ready(function () {
+  $("#size_form").submit(function (event) {
+    var a = "/shop/product_details/{{models.slug}}/";
+    $.ajax({
+      type: "POST",
+      url: a,
+
+    data: {
+            state:"inactive",
+            shoes_data: $('#shoes_size_id').val(),
+            shirt_data: $('#shirt_size_id').val(),
+            pant_data: $('#pant_size_id').val(),
+    },
+
+    beforeSend: function (xhr) {
+    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+    },
+
+    success: function () {
+        setTimeout(function(){
+             $('#message').html("<small class='text-danger font-weight-bold'>Submitted.</small>").delay(3000).fadeOut(300);
+            });
+      }
+
+    });
+    return false; 
+  });
+
+});
+$(document).ready(function(){
+    $('#shoes_size_id').on('click', function() { 
+        $('#size_submit_id').trigger('click');
+    });
+  });
+
+  $(document).ready(function(){
+    $('#shirt_size_id').on('click', function() { 
+        $('#size_submit_id').trigger('click');
+    });
+  });
+  $(document).ready(function(){
+    $('#pant_size_id').on('click', function() { 
+        $('#size_submit_id').trigger('click');
+    });
+  });
+
+//option value
+</script>
+
+
+{% endblock %}

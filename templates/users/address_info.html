@@ -1,0 +1,61 @@
+{% extends 'users/profile.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block address_info %}
+<style type="text/css">
+    .setting {
+      display: none;
+ 	}
+
+  #div_id_phone_number #tel_1 {
+
+    margin: 1rem 0rem 0rem 0rem;
+  }
+
+</style>
+
+
+
+<form class="shadow p-3 mb-5 bg-white rounded" enctype="multipart/form-data" id="formUpload" method="POST">
+    {% csrf_token %}
+
+    <div class="form-row">
+       <div class="form-group col-md-6">
+            {{ address_info_form.first_name|as_crispy_field }}
+       </div>
+       <div class="form-group col-md-6">
+            {{ address_info_form.last_name|as_crispy_field }}
+       </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            {{ address_info_form.house_number|as_crispy_field }}
+        </div>
+        <div class="form-group col-md-4">
+            {{ address_info_form.city|as_crispy_field }}
+        </div>
+         <div class="form-group col-md-4">
+            {{ address_info_form.zone|as_crispy_field }}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-2">
+            {{ address_info_form.devision|as_crispy_field }}
+        </div>
+           <div class="form-group col-md-3">
+            {{ address_info_form.effective_delivery|as_crispy_field }}
+        </div>
+          <div class="form-group col-md-6">
+            {{ address_info_form.phone_number|as_crispy_field  }}
+        </div>
+    </div>
+
+    <button class="btn btn-primary btn-sm font-weight-bold mt-3" type="submitt">Update</button>
+    <a href="{% url 'users:users-profile' %}"  class="btn btn-primary btn-sm font-weight-bold mt-3" type="button">Back</a>
+</form>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,165 @@
+{% load static %}
+
+<body>
+
+<link rel="stylesheet" href=" {% static 'css/bootstrap.min.css' %} " type="text/css">
+
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<script src="https://scripts.sandbox.bka.sh/versions/1.2.0-beta/checkout/bKash-checkout-sandbox.js"></script>
+<!-- Initially disabled -->
+
+  <div class="container mr-5" style="margin-top: 6rem;">
+
+    <img class="img-fluid" style="height: 100px; width: auto;"      
+    src="https://cdn.jagonews24.com/media/imgAllNew/BG/2016April/bkash-large20160424110715.jpg">
+    <hr>
+    <div><button class="btn" id="bKash_button" style="background-color:#c42754; color: white;">Pay With bKash</button></div>
+
+  </div>
+
+  <div class="container mt-2 mr-5 font-weight-bold"><hr>
+   <p><strong>Note:</strong> This is a development sandbox, so it won't create real transation</p>
+   <p> To check how it work use Default values</p>
+   <p class="horizontal ui violet label"> Bkash Number: 01770618575 </p>
+   <p class="horizontal ui violet label"> OTP : 123456 </p>
+   <p class="horizontal ui green label"> PIN : 12121 </p><hr>
+
+
+    <p>
+      You will be redirected to bKash website to complete your payment. Please take note of the following before you proceed:<hr>
+      1. You have an activated bKash account<br>
+      2. Ensure you have sufficient balance in your bKash account to cover the total cost of the order<br>
+      3. Ensure you are able to receive your OTP (one-time-password) on your mobile and have bKash PIN
+    </p>
+  </div>
+
+<script>
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken')
+
+let paymentID;
+
+
+let createCheckoutUrl = 'https://merchantserver.sandbox.bka.sh/api/checkout/v1.2.0-beta/payment/create';
+let executeCheckoutUrl = 'https://merchantserver.sandbox.bka.sh/api/checkout/v1.2.0-beta/payment/execute';
+
+$(document).ready(function () {
+    initBkash();
+});
+
+function initBkash() {
+    
+    bKash.init({
+      paymentMode: 'checkout', // Performs a single checkout.
+      paymentRequest: {"amount": "{{order.sub_total}}", "intent": 'sale'},
+
+
+      createRequest: function (request) {
+        $.ajax({
+          url: createCheckoutUrl,
+          type: 'POST',
+          contentType: 'application/json',
+          headers: {
+            'X-CSRFToken' : csrftoken,
+
+          },
+          data: JSON.stringify(request),
+
+          success: function (data) {
+              
+            if (data && data.paymentID != null) {
+              paymentID = data.paymentID;
+              bKash.create().onSuccess(data);
+            } 
+            else {
+              bKash.create().onError(); // Run clean up code
+              alert(data.errorMessage + " Tag should be 2 digit, Length should be 2 digit, Value should be number of character mention in Length, ex. MI041234 , supported tags are MI, MW, RF");
+            }
+
+          },
+          error: function () {
+            bKash.create().onError(); // Run clean up code
+            alert(data.errorMessage);
+          }
+        });
+      },
+      executeRequestOnAuthorization: function () {
+        $.ajax({
+          url: executeCheckoutUrl,
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({"paymentID": paymentID}),
+          
+          success: function (data) {                   
+
+            if (data && data.paymentID != null) {
+              // On success, perform your desired action
+              alert('[SUCCESS] data : ' + JSON.stringify({'data' : data}));
+
+              window.location.href = "{% url 'checkout:success-page' order.id %}";
+
+            }
+            
+            else { 
+              alert('[ERROR] data : ' + JSON.stringify(data));
+              bKash.execute().onError(); //run clean up code
+            }
+
+            // To Post success data in django view
+            $.ajax({
+            type:"POST",
+            url: '/checkout/bkash/1/',
+            contentType: 'application/json',
+            headers: {
+              'X-CSRFToken' : csrftoken,
+            },
+            data: JSON.stringify({'data_set': data}),
+            // we store all the data in 'data_set' variable
+            error: function(req, err){ console.log('my message' + err); }
+            
+            });
+            // end ajax
+
+          }, //success function
+          
+          error: function () {
+            alert('An alert has occurred during execute');
+            bKash.execute().onError(); // Run clean up code
+          },
+
+        }); // ajax
+
+
+      }, // execution function end
+
+
+      onClose: function () {
+        alert('User has clicked the close button');
+      }
+    });
+
+
+    $('#bKash_button').removeAttr('disabled');
+
+}
+
+</script> 
+</body>

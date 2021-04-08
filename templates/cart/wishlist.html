@@ -1,0 +1,84 @@
+{% extends 'base/base_navbar.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg container" data-setbg="{% static 'img/wish_header.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Wish List</h2>
+                    <div class="breadcrumb__option">
+                        <a href=" {% static './index.html' %} ">Home</a>
+                        <span>Wish List</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Shoping Cart Section Begin -->
+<section class="shoping-cart spad">
+<div class="container">
+<div class="row">
+    <div class="col-lg-12">
+        <div class="shoping__cart__table">
+            <table>
+            <thead>
+                <tr>
+                    <th class="shoping__product">Products</th>
+                    <th>Price</th>
+                    <th>available</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            {% if  empty %} <!-- If there is no cart objects -->
+             <table class="table mt-5">
+              <tbody>
+               <tr>
+                 <td class="h1 text-danger mt-5">{{ empty_massage }}</td>{{empty}}
+               </tr>
+              </tbody>
+             </table>
+             {% else %} <!-- Otherwasy it will continue under this Statemant -->
+
+
+             {% for i in wishlist %} <!-- Start For loop -->
+            <tr> 
+                <td class="shoping__cart__item">
+                    <img style="width: 100px; height: 100px;" src="{{ i.item.images.url }}" alt="" >
+                    <h5><a class="text-dark" href="{% url 'shop:product-details' i.item.slug %}">{{i.item.titel}}</a></h5>
+                </td>
+
+                <td class="shoping__cart__price">$ {{ i.item.price }}</td> 
+        
+
+                <td class="">
+                <a class="btn btn-md" href="{% url 'cart:remove_wish_list' i.id %}"><i class="fas fa-trash-alt"></i></a>
+                </td>
+
+            </tr>
+
+        </tbody>
+
+       {% empty %} <!-- If there is no cart objects --> 
+        <tr>
+        <td class="h1">Your Wish List Is Empty</td>
+        </tr>
+       {% endfor %} <!-- End For Loop -->
+
+        </table>
+        </div>
+    </div>
+</div>
+
+</div>
+</section>
+    <!-- Shoping Cart Section End -->
+{% endif %} <!-- End If Statemant [This is come from line 7] -->
+{% endblock %}

@@ -1,0 +1,124 @@
+{% load static %}
+{% load qr_code %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export Pdf</title>
+</head>
+<body>
+    
+<style>
+    @page {
+        size: 'A4';
+        margin: 2.5cm, 1.5cm, 3.5cm, 1.5cm;
+    }
+
+    * {
+        box-sizing: border-box;
+        font-size: x-small;
+      }
+      
+      /* Create two equal columns that floats next to each other */
+      .column {
+        float: left;
+        width: 50%;
+        padding: 10px;
+      }
+      .column_custom{
+        float: left;
+        width: 30%;
+        padding: 10px;
+      }
+      
+      /* Clear floats after the columns */
+      .row:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+</style>
+
+<div class="row">
+    <div class="column">
+        <span style="font-weight: bold; text-align: center;"> Eshop</span>
+        <!-- <img src="https://image.freepik.com/free-vector/dream-logo_10250-3951.jpg" style="height: 100px; width: 100px;" alt="">   -->
+    </div>
+    
+</div>
+
+<div class="row">
+    <div class="column">
+        <span>Order Number: <i style="font-weight: bold;">{{order.order_number}}</i></span><br>
+        <span>Ordered Date: <i style="font-weight: bold;">{{ order.ordered_date|date:"D d M Y" }}</i></span>
+    </div>
+    <div class="column">
+        <span style="float: right;">Delivery Date: <i>{% now "jS F Y" %}</i></span>
+    </div>
+</div><hr>
+
+<div class="row">
+    <div class="column">
+        <span>Bayer's Name & Address</span>
+        <hr>
+        <p> <h4>{{order.shipping_address.first_name}} {{order.shipping_address.last_name}} </h4>
+            {{order.shipping_address.devision}}, {{order.shipping_address.city}}<br> 
+            {{order.shipping_address.house_number}}<br>{{order.shipping_address.zone}}<br>
+            {{order.shipping_address.effective_delivery}} <br>
+            Phone: {{order.shipping_address.phone_number}}
+        </p>
+    </div>
+    <div class="column">
+        <span>Shipper's Name & Address</span>
+        <hr>
+        <p> <h4>Mohammad Fayaj</h4> 
+            Chandpur-Hajigonj, Matala-6100  <br> 
+            bangladesh <br>
+            Phone: +88018630435369
+        </p>
+    </div>
+</div> <hr>
+<div class="row">
+    <div class="column_custom" style="font-weight: bold;">Product</div>
+    <div class="column_custom" style="font-weight: bold;">Quantity</div>
+    <div class="column_custom" style="float: right; font-weight: bold;">Price (Tk)</div>
+</div><hr>
+{% for i in order.items.all %}
+<div class="row">
+    <div class="column_custom">
+        <span>{{i.item}}</span>
+    </div>
+    <div class="column_custom"> 
+        <span>{{i.quantity}}</span>
+    </div>
+    <div class="column_custom" style="float: right;">
+        <span>{{i.get_total_item_price}} Tk</span>
+    </div>
+</div><hr>
+{% endfor %}
+<div class="row">
+    <div class="column_custom" style="float: right;">
+        <span> SubTotal =  <i> {{order.total}} Tk</i></span><hr>
+        <span> Shipping Fee =  <i> {{order.deliverycost}} Tk</i></span><hr>
+        <span> value-added tax (VAT) =  <i> 0 Tk</i></span><hr>
+        <span> Total =  <i> {{order.sub_total}} Tk</i></span>
+    </div>
+</div><hr>
+
+<div>
+    <span style="font-weight: bold;">Authorized Signature</span>
+    <div style="border: solid black 1px; padding: 1rem; margin-top: 10px;">
+        Eshop Lorem ipsum, or lipsum as it is sometimes known, 
+        is dummy text used in laying out print, graphic or web designs. 
+        The passage is attributed to an unknown typesetter in the 15th century ...............
+    </div>
+    <span style="font-weight: bold; float: right; margin-top: 5px;">Powerd By Eshop <br>
+        {% qr_from_text "http://127.0.0.1:8000/admin/cart/order/" size=4 image_format="png" error_correction="L" %}
+    </span>
+    
+</div>
+<!-- {{order.shipping_address.first_name}} {{order.shipping_address.last_name}} Total Order Cost {{order.sub_total}} -->
+</body>
+</html>

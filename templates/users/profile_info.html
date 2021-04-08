@@ -1,0 +1,23 @@
+{% extends 'users/profile.html' %}
+{% load static %}
+{% load crispy_forms_tags%}
+
+
+{% block profile_info %}
+
+ <style type="text/css">
+ 	.setting {
+      display: none;
+ 	}
+
+ </style>
+
+  <form class="shadow p-3 mb-5 bg-white rounded" method="post" enctype="multipart/form-data" id="formUpload" >
+      {% csrf_token %}
+      {{ user_update_form|crispy }}
+      <button class="btn btn-primary btn-sm font-weight-bold mt-3" type="submitt">Update</button>
+      <a href="{% url 'users:users-profile' %}"  class="btn btn-primary btn-sm font-weight-bold mt-3" type="button">Back</a>
+
+  </form>
+
+{% endblock %}

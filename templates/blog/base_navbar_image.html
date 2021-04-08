@@ -1,0 +1,32 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+<!-- Hero Section Begin -->
+
+<div class="container mt-3">
+    <div class="hero__search__form mb-3" style="width: 100%;  border: 1px solid #ced4da">
+    <form method="get" action="{% url 'shop:product_list' %}">
+     {{ filter.form.titel }} 
+      <button type="submit" class="site-btn">SEARCH</button>
+    </form>
+  </div>
+</div>
+
+<section class="hero">
+<div class="container">
+
+{% for i in header_image %}
+<div class="hero__item set-bg" data-setbg="{{i.header_image.url}}">
+    <div class="hero__text">
+        <span class="text-light">{{i.titel}}</span>
+        <h2 class="text-light">Vegetable <br />100% Organic</h2>
+        <p class="text-danger">Free Pickup and Delivery Available</p>
+        <a href="{% url 'shop:product_list' %}" class="primary-btn">SHOP NOW</a>
+    </div>
+</div>
+{% endfor %}
+
+</div>
+</section>
+<!-- Hero Section End -->

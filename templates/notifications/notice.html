@@ -1,0 +1,45 @@
+<div class="alert alert-block alert-{{ notice.level }}">
+
+  <a class="close pull-right text-danger" href="{% url 'notifications:delete' notice.slug %}">
+    <i class="fas fa-times-circle"></i>
+  </a>
+
+  <h4><i class="circular small inverted black envelope icon {% if notice.unread %}-alt{% endif %}"></i>
+    <a class="text-dark h5" href="{% url 'notifications:mark_as_read' notice.slug %}">
+    {{ notice.verb }}</a> <hr>
+    {% if not notice.image %}
+         <p></p>
+    {% else  %}                   
+    <img class="img" src="{{ notice.image.url }}" style="height: 250px;">
+    {% endif %}
+    {% if notice.target %}
+      of {{ notice.target }}
+    {% endif %}
+    
+  </h4>
+  
+  <p>{{ notice.timesince }} ago</p>
+  
+  <p class="text-dark">{{ notice.description|linebreaksbr }}</p>
+  
+  <div class="notice-actions">
+    {% for action in notice.data.actions %}
+      <a class="btn" href="{{ action.href }}">{{ action.title }}</a>
+    {% endfor %}
+  </div>
+
+</div>
+
+
+<style type="text/css">
+
+a:hover, a:focus {
+  color: #ed9388;
+}
+
+a {
+ 
+  color: #7fad39;
+}
+
+</style>

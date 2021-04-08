@@ -1,0 +1,30 @@
+{% load static %}
+{% load crispy_forms_tags %}
+{% load mptt_tags %}
+<link rel="stylesheet" href=" {% static 'css/bootstrap.min.css' %} " type="text/css">
+<link rel="stylesheet" href=" {% static 'css/style.css' %} " type="text/css">
+<script src=" {% static 'js/bootstrap.min.js' %} "></script>
+
+<style>
+	#myDiv{
+		margin-top: 10rem;
+	}
+</style>
+
+
+<div class="container review p-5 card shadow" id="myDIV">
+
+	<h5>Delete</h5>
+    <p class="h5 text-danger mt-2">Are you sure, you want to delete? <a type="submit" href="{{ request.META.HTTP_REFERER }}" class="btn btn-primary btn-sm">Cancel</a> <hr>{{instance.review}}
+    </p>
+
+	<form id="myForm" method="POST" action="">
+	{% csrf_token %}
+
+		<input type="" name="next" value="{{ request.META.HTTP_REFERER }}" style="display: none;">
+		<button type="submit" class="btn btn-danger btn-sm">Delete</button>
+
+	</form>
+
+</div>
+

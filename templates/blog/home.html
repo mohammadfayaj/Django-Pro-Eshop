@@ -1,0 +1,244 @@
+{% extends 'base/base_navbar.html' %}
+{% load static %}}
+{% load blog_template_tags %}
+{% block content %}
+
+
+{% include 'blog/base_navbar_image.html' %}
+
+<!-- banner image start -->
+<div class="container mt-5">
+    <div class="row">
+        <div class="banner owl-carousel">
+            {% for i in banner %}
+            <div class="col">
+              <img src="{{i.banner_image.url}}">
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- banner image end -->
+
+<main>
+
+<!-- Featured Section begin -->
+<section class="featured spad">
+<div class="container">
+
+  <div class="row">
+    <div class="container section-title product__discount__title">
+    <h2 class="text-dark">Latest Products</h2>
+    </div>
+    <div class="product__discount__slider owl-carousel">
+      {% for i in product_lists|sort_by_date:'-date_added' %}
+      <div class="col-lg-4">
+        <div class="product__discount__item">
+          <div class="product__discount__item__pic set-bg" data-setbg="{{i.images.url}}">
+            <div class="product__discount__percent">new</div>
+          </div>
+          <div class="product__discount__item__text">
+            <!-- <span>Dried Fruit</span> -->
+            <h5><a class="text-dark" href="{{i.get_absolute_url}}">{{i.titel}}</a></h5>
+            <div class="product__item__price text-dark">${{ i.price }} <span class="text-danger">$36.00</span></div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+</section>
+<!-- Featured Section End -->
+
+<style type="text/css">
+ .top_review {
+      margin-top: 3rem;
+      /*100,85,4,0,64*/
+      background-image:
+      linear-gradient( rgba(255, 255, 255, 0), rgb(0, 0, 0) ),
+      url("https://images.pexels.com/photos/3102817/pexels-photo-3102817.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+      padding: 1rem;
+      position: relative;
+      box-shadow: inset 0 0 0 1000px rgba(0,0,0,.2);
+
+  }
+
+</style>
+
+<!-- top review porducts start -->
+<section class="featured spad top_review ">
+<div class="container">
+
+  <div class="row">
+    <div class="section-title product__discount__title">
+    <h2 class="text-light">Top Review Products</h2>
+    </div>
+    <div class="product__discount__slider owl-carousel">
+      {% for i in product_lists|sort_by_ratings:'-ratings' %}
+      <div class="col-lg-4">
+        <div class="product__discount__item">
+          <div class="product__discount__item__pic set-bg" data-setbg="{{i.images.url}}">
+            <div class="product__discount__percent">-20%</div>
+          </div>
+          <div class="product__discount__item__text">
+            <span class="text-light">{{i.availability}}</span>
+            <h5><a class="text-light" href="{{i.get_absolute_url}}">{{ i.titel }}</a></h5>
+            <div class="product__item__price text-light">${{ i.price }} <span class="text-danger">${{i.old_price}}</span></div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+</section>
+<!-- top review porducts end -->
+
+<script type="text/javascript">
+
+  //Browsers will still store this data even after the browser is closed.
+  // if you use locaStorage
+  document.addEventListener("DOMContentLoaded", function(event) { 
+      var scrollpos = sessionStorage.getItem('#explore_prodcuts');
+      if (scrollpos) window.scrollTo(0, scrollpos);
+      // After page reload window screen will stay in same stage!
+  });
+
+  window.onbeforeunload = function(e) {
+      sessionStorage.setItem('#explore_prodcuts', window.scrollY);
+  };
+
+</script>
+
+</main>
+
+<!-- explore products start -->
+<section class="from-blog spad explore_prodcuts">
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="section-title from-blog__title">
+                <h2 class="text-dark">Explore  Products</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+    {% for i in products_lists %}
+ <!--  it will show 18 product item -->
+
+        <div class="col-lg-2 col-md-4 col-sm-6 card-columnsa" >
+            <div class="blog__item">
+                <div class=" product__discount__item__pic set-bg" data-setbg="{{ i.images.url }}">
+ 
+                </div>
+                <div class="blog__item__text product__discount__item__text">
+                    <ul>
+                        <h6><a class="text-dark" href="{{i.get_absolute_url}}">{{ i.titel }}</a></h6>
+                        <li class="product__item__price text-dark"><i class="fas fa-money-check-alt"></i> ${{ i.price }} <span class="text-dark">$36.00</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+    </div>
+
+
+
+<div class="py-4">
+  <nav aria-label="Page navigation example">
+    {% if products_lists.has_other_pages %}
+
+    <ul class="pagination">
+
+      {% if products_lists.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ products_lists.previous_page_number }}">Previous</a>
+      </li>
+      {% else %}
+      <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+      {% endif %}
+
+      {% for i in products_lists.paginator.page_range %}
+      {% if products_lists.number == l %}  <!-- number default variable -->
+      <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span>
+      </li>
+      {% else %}
+      <li><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+      {% endfor %}
+
+      {% if products_lists.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ products_lists.next_page_number }}">Next</a></li>
+      {% else %}
+      <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+      {% endif %}
+    </ul>
+
+    {% endif %}
+
+  </nav>
+  </div>
+
+</div>
+</section>
+<!-- explore products end -->
+
+
+<!-- Blog Section Begin -->
+<section class="from-blog spad">
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="section-title from-blog__title">
+                <h2 class="text-dark">From The Blog</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+    {% for i in blog %}
+    {% if forloop.counter < 19 %}
+        <div class="col-lg-4 col-md-4 col-sm-6 card-columnsa" >
+            <div class="blog__item">
+                <div class="blog__item__pic">
+                    <img src=" {{ i.blog_image.url }} " alt="">
+                </div>
+                <div class="blog__item__text">
+                    <ul>
+                        <li><i class="fa fa-calendar-o"></i> {{ i.created_at }}</li>
+                        <li><i class="fa fa-comment-o"></i> 5</li>
+                    </ul>
+                    <h5><a href="#">{{i.blog_title}}</a></h5>
+                    <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+    </div>
+    
+    <div class="container text-center">
+        <a href="{% url 'blog:blog' %}" class="btn btn-md btn-outline-danger" style="padding-left: 4rem; padding-right: 4rem;">See All</a>
+    </div>
+
+
+</div>
+</section>
+<!-- Blog Section End -->
+
+
+
+
+{% endblock %}
+
+
+
+

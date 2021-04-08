@@ -1,0 +1,118 @@
+{% extends 'base/base_navbar.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <style type="text/css">
+        
+        .image {
+            background-image: url({% static 'img/hero/4.jpg' %}); 
+            background-repeat: no-repeat; 
+            background-size: cover;
+            padding-top: 7%;
+              }
+
+
+        body {
+        /*background-image: url(https://coloredbrain.com/wp-content/uploads/2016/07/login-background.jpg); */
+        background-repeat: no-repeat; 
+        background-size: cover;
+
+        }
+
+
+        .button_control {
+            padding: 3rem;
+            /*opacity: 1;*/
+            /*background-repeat: no-repeat; */
+            background-size: cover;
+            background-image: url(https://images.unsplash.com/photo-1556139943-4bdca53adf1e?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=634&q=80); 
+
+        }
+
+
+        .form_control {
+            padding: 3rem;
+            /*opacity: 1;*/
+            /*background-repeat: no-repeat; */
+            background-size: cover;
+            background-image: url(https://images.unsplash.com/photo-1518204919429-b447980c73bc?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=964&q=80); 
+
+        }
+
+        @media only screen and (max-width: 767px) {
+
+           .titel{
+              text-align: center;
+           }
+        }
+
+    </style>
+
+<section class="container" style="margin-top: 7%; margin-bottom: 7%;">
+<div class="row">
+
+  <legend class="titel">WELCOME TO THE | ESHOP </legend>
+
+  <div class="col-lg-4 image shadow bg-white rounded card mt-3 button_control">
+    <legend class="font-weight-bold text-dark">LOGIN WITH | SOCIAL APP</legend>
+
+    <a href="{% url 'social:begin' 'facebook' %}"  class="ui facebook button mt-4">
+      <i class="facebook icon"></i>
+      Facebook
+    </a>
+
+    <a href="{% url 'social:begin' 'twitter' %}"  class="ui twitter button mt-4">
+      <i class="twitter icon"></i>
+      Twitter
+    </a>
+
+    <a href="{% url 'social:begin' 'google-oauth2' %}"  class="ui google plus button mt-4">
+      <i class="google plus icon"></i>
+      Google Plus
+    </a>
+
+    <hr>
+    <a href="{% url 'users:users-register' %}" class="positive ui button">OR | Create an Accounting</a>
+
+
+  </div>
+
+<div class="col-lg-8 mt-3 card shadow bg-white form_control">
+<form class="" action="#" method="post" novalidate="novalidate" id="form">
+  <div class="form-group">
+        {% csrf_token %}
+        {{form|crispy}}
+    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  </div>
+
+  <div class="form-group form-check mt-3">
+    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+  </div>
+  <button type="submit" class="ui blue button mt-3">Submit</button><hr>
+  {% if user.is_authenticated %}
+  <a class="form-check-label mt-3" href="{% url 'users:password_reset' %}">forget password?</a>
+  {% endif %}
+</form>
+</div>
+    
+</div>
+</section>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

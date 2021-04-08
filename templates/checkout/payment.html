@@ -1,0 +1,43 @@
+{% extends 'base/base_navbar.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="ui floating message container mt-5">
+  <strong>If you want to cancel this order feel free to go back [After you choose your payment method ther will be no cancel]</strong>
+  <a href="{% url 'shop:product_list' %}" class="ui horizontal green label"> Cancel Order</a>
+</div>
+
+<div class="ui container mt-5">
+  <legend class="font-weight-bold">Choose your payment</legend>
+  <div class="row shadow mt-3">
+
+     <!-- Stripe payment -->
+    <div class="col card">
+      <a href="{% url 'checkout:stripe-payment' %}"><img src="{% static 'img/payment/stripe.png' %}"></a>
+    </div>
+
+     <!-- Cash on Delivery -->
+    <div class="col card">
+      {% for i in order %}
+      <a href="{{i.get_absolute_url}}"><img src="{% static 'img/payment/cash.png' %}"></a>
+      {% endfor %}
+    </div>
+
+    <!-- Bkash Payment -->
+    <div class="col card">
+      {% for i in order %}
+      <a href='{% url "checkout:bkash_pyment" i.id %}'><img src="{% static 'img/payment/bkash.png' %}">
+      {% endfor %}
+    </div>
+
+    <!-- Paypal Payment -->
+    <div class="col card">
+      <a href=''><img src="{% static 'img/payment/paypal.png' %}">
+    </div>
+
+   </div>
+</div>
+
+{% endblock %}

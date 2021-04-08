@@ -1,0 +1,19 @@
+{% extends "admin/change_form.html" %}
+{% load static %}
+{% debug %}
+
+
+{% block object-tools %}
+{{ block.super }}
+
+    {% comment %} {% url 'checkout:export_as_pdf' %} {% endcomment %}
+    <a href="{% url 'checkout:export_as_pdf' original.id %}" class="btn btn-sm btn-light font-weight-bold" style="margin: 1rem;">  <i class="fa fa-file-pdf-o"></i> Export as PDF</a>
+
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+
+<link rel="stylesheet" href="{% static 'css/base.css' %}" type="text/css">
+
+{% endblock %}

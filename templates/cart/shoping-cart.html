@@ -1,0 +1,182 @@
+{% extends 'base/base_navbar.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg container" data-setbg="{% static 'img/cart_header.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Shopping Cart</h2>
+                    <div class="breadcrumb__option">
+                        <a href=" {% static './index.html' %} ">Home</a>
+                        <span>Shopping Cart</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<style type="text/css">
+
+        .shoping__cart__item img {
+            width: 100px;
+            height: 100px;
+           }
+
+        @media only screen and (max-width: 767px) {
+
+           .shoping__cart__item h5 {
+              font-size: 10px;
+           }
+
+           .shoping__cart__item img {
+            width: 50px;
+            height: 50px;
+           }
+
+           .shoping__cart__price span{
+                font-size: 10px;
+           }
+
+           .shoping__cart__total span{
+                font-size: 10px;
+           }
+
+           .shoping__cart__table th span {
+                font-size: 10px;
+
+           }
+
+
+        }
+
+
+
+</style>
+
+
+
+<!-- Shoping Cart Section Begin -->
+<section class="shoping-cart spad">
+<div class="container">
+<div class="row">
+    <div class="col-lg-12">
+        <div class="shoping__cart__table">
+            <table>
+            <thead>
+                <tr>
+                    <th class="shoping__product"><span>Products</span></th>
+                    <th><span>Price</span></th>
+                    <th><span>Quantity</span></th>
+                    <th><span>Total</span></th>
+                    <th><span>Remove</span></th>
+                </tr>
+            </thead>
+            <tbody>
+
+             {%  if cart.items != None %}
+
+             {% for i in cart.items.all %} <!-- Start For loop -->
+            <tr> 
+                <td class="shoping__cart__item">
+                    <img src="{{ i.item.images.url }}" alt="" >
+                    <h5>{{i.item.titel}}</h5>
+                </td>
+                <td class="shoping__cart__price"> <span>$ {{ i.item.price }}</span></td>
+                <td class="shoping__cart__quantity">
+                    <div class="quantitylll">
+                        <div class="pro-slug">
+                            <a href="{% url 'cart:remove-from-quantity' i.item.slug %}"><i class="fas fa-minus mr-2"></i></a>
+                                                       {{ i.quantity }}
+                            <a href="{% url 'cart:add-to-quantity' i.item.slug %}"><i class="fas fa-plus ml-2"></i></a>
+                        </div>
+                    </div>
+                </td>
+                <td class="shoping__cart__total">
+                  <span>{{i.get_total_item_price}} </span>
+                </td>
+                <td class="shoping__cart__item__close">
+                <a class="btn btn-md" href="{% url 'cart:remove-from-cart' i.item.slug %}"><i class="fas fa-trash-alt"></i></a>
+                </td>
+            </tr>
+
+            {% empty %} <!-- empty should be inside the for statement  -->
+
+            <tr><td>{{empty_massage}}</td></tr>
+
+            {% endfor %}  
+
+            {% endif %}
+
+
+            </tbody>
+
+
+
+
+        </table>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="shoping__continue">
+            <div class="shoping__discount">
+                <h5>Discount Codes</h5>
+
+                 <style type="text/css">
+                 #coupon_form label {
+                   display: none;
+                 }
+
+                 .site-btn {
+                    background-color: #f03250 !important;
+                 }
+
+                </style>
+
+                <form id="coupon_form" action="#" method="POST">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button type="submit" class="site-btn mt-2">APPLY COUPON</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="shoping__checkout">
+            <h5>Cart Total</h5>
+            <ul>
+
+            {% if cart.coupon %}
+            <li>Coupon <span>-${{ cart.coupon.amount }}</span></li>
+            {% endif %}
+
+
+            <hr>
+            <li>SUBTOTAL <span>{{cart.show_cart_list_total}}</span></li>
+    
+            </ul>
+            {%  if cart.items != None %}
+            <a href="{% url 'checkout:check-out' cart.id %}" class="primary-btn">PROCEED TO CHECKOUT</a>
+            {% endif %}
+            <!-- <a href="{% url 'shop:product_list' %}" class="primary-btn cart-btn">OR | CONTINUE SHOPPING</a> -->            
+
+
+
+        </div>
+    </div>
+</div>
+</div>
+</section>
+    <!-- Shoping Cart Section End -->
+<!-- End If Statemant [This is come from line 7] -->
+
+{% endblock %}
