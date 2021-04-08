@@ -5,7 +5,7 @@ from decouple import config
 import os
 
 
-DATABASES = { 'default': dj_database_url.config() }
+DATABASES = { 'default': dj_database_url.config(default='postgres://lsscltjategzap:bc9cd7672178cecc2a9b6b4cf99056009ad31ed262903dce93c9b34deac209a3@ec2-107-22-245-82.compute-1.amazonaws.com:5432/d8duuiekt3r7ji') }
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
