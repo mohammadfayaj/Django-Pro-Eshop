@@ -152,7 +152,7 @@
     </div>
 
 
-
+{% if products_lists != None %}
 <div class="py-4">
   <nav aria-label="Page navigation example">
     {% if products_lists.has_other_pages %}
@@ -186,6 +186,7 @@
 
   </nav>
   </div>
+  {% endif %}
 
 </div>
 </section>
