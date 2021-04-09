@@ -10,7 +10,7 @@ from django.urls import reverse
 
 class Profile (models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    file = models.ImageField(default='default.jpg', upload_to="profile_pic")
+    file = models.ImageField(default='default.jpg', upload_to="profile_pic",null=True)
 
     def __str__(self):
         return f'{self.user.username} Profile'
@@ -50,7 +50,7 @@ class Address (models.Model): #persion
     devision = models.ForeignKey(Devision, on_delete=models.CASCADE,null=True)
     deliverycharges = models.ForeignKey(Deliverycharges, on_delete=models.CASCADE, blank=True, null=True)
 
-    phone_number = PhoneNumberField(help_text='Please Enter Your Valid Phone Number.',)
+    phone_number = PhoneNumberField(help_text='Please Enter Your Valid Phone Number.',null=True)
     
     first_name = models.CharField(max_length=30,null=True)
     last_name = models.CharField(max_length=30,null=True)
@@ -58,8 +58,8 @@ class Address (models.Model): #persion
     effective_delivery = models.CharField(max_length=30, choices=DELIVERY,default='Home',null=True)
     city = models.CharField(max_length=30,null=True)
     zone = models.CharField(max_length=30, blank=True, null=True)
-    # extra_information = models.CharField(max_length=150)
-    # help_taxt = when you are abalavil
+
+
 
     def __str__(self):
         return f'{self.users.username} Address'
