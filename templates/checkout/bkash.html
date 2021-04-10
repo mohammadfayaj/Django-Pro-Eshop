@@ -126,7 +126,7 @@ function initBkash() {
             // To Post success data in django view
             $.ajax({
             type:"POST",
-            url: '/checkout/bkash/1/',
+            url: '/checkout/bkash/{{order.id}}/',
             contentType: 'application/json',
             headers: {
               'X-CSRFToken' : csrftoken,
