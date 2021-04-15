@@ -48,7 +48,7 @@ DATABASES = { 'default': dj_database_url.config() }
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ['127.0.0.1', ] # list of domains name
+ALLOWED_HOSTS = ['*'] # list of domains name
 
 
 # HTTPS settings
