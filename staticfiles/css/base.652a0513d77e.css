@@ -1,0 +1,442 @@
+.main > .content {
+  width: 80% !important;
+	background-color: #354052;
+}
+
+
+
+
+.delete-confirmation form .cancel-link {
+  display: inline;
+}
+
+
+.module .file-upload a {
+  color:green;
+}
+
+#login-form .form-row label {
+    color: #fff6f6;
+}
+
+.flex #content-main{
+
+      display: all;
+    -webkit-box-shadow: 0px 0px 23px 5px rgb(0, 0, 0);     
+    -moz-box-shadow: 0px 0px 23px 5px rgb(0, 0, 0);     
+    box-shadow: 0px 0px 23px 5px rgb(0, 0, 0);
+
+}
+
+
+.colMS #content-main{
+
+    display: all;
+    -webkit-box-shadow: 0px 0px 23px 5px rgb(0, 0, 0);     
+    -moz-box-shadow: 0px 0px 23px 5px rgb(0, 0, 0);     
+    box-shadow: 0px 0px 23px 5px rgb(0, 0, 0);
+
+}
+
+td, th {
+    font-size: 14px;
+    line-height: 16px;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+    padding: 8px;
+    font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif;
+    background-color:#405677;
+    color: white;
+
+}
+
+
+
+.h1, h1 {
+    font-size: 1.5rem;
+}
+
+#branding h1, #branding h1 a:link, #branding h1 a:visited {
+  color: #2bb656;
+}
+
+
+/* base.css | http://127.0.0.1:8000/static/css/base.css */
+
+#header {
+  padding: 4px 45px;
+}
+
+
+/* base.css | http://127.0.0.1:8000/static/admin/css/base.css */
+
+
+
+#nav-sidebar {
+  background-color: #272f3c;
+  display: all;
+-webkit-box-shadow:  7px 5px 8px 2px rgb(0, 0, 0);     
+-moz-box-shadow:  7px 5px 8px 2px rgb(0, 0, 0);     
+box-shadow:  7px 5px 8px 2px rgb(0, 0, 0);
+}
+
+/*#user-tools{
+  float: left;
+}*/
+
+#header {
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 40px;
+    background: #354052;
+    /*#1f2426;*/
+    color: #f7f7f4;
+    overflow: hidden;
+}
+
+/*=================== START ADMIN SHORTUCTS ======================*/
+
+.admin_shortcuts .shortcuts {
+    background: #2b3647;
+    padding: 3px 40px 15px;
+    list-style: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2) inset;
+    margin: 0;
+}
+
+.admin_shortcuts .shortcuts h2 {
+    color: #fff;
+    border-bottom: 1px solid #2bb656;
+    line-height: 24px;
+    margin: 10px 0 5px;
+}
+
+.admin_shortcuts .shortcuts li a {
+  padding: 14px 0px 14px 50px;
+  margin: 2px 4px 0px 0;
+  display: block;
+  float: left;
+  color: #fff;
+  border: 1px solid #2bb656;
+  background: #273333 10px 50% no-repeat;
+  font-size: 14px;
+  line-height: 8px;
+  border-radius: 3px;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+  position: relative;
+  min-height: 0px;
+}
+
+
+.admin_shortcuts .shortcuts li a .icon {
+  font-size: 16px;
+  margin-top: -8px;
+}
+
+/*=============== ADMIN SHORTCUTS END ====================================*/
+
+
+/* START Site administration */
+
+h1 {
+   /* site administration text */
+   color: #f9efef;
+   font-weight: bold;
+   text-transform: uppercase;
+}
+
+
+caption {
+  caption-side: top;
+}
+
+
+.module caption, .inline-group h2 {
+    margin: 0;
+    padding: 8px;
+    font-weight: 400;
+    font-size: 13px;
+    text-align: left;
+    background: #2b3647;
+    box-shadow: 0px 4px 2px #201f1f;
+}
+
+
+/* Tabel Header */
+a.section:link, a.section:visited {
+  color: white;
+}
+
+
+/*change app color*/
+.module a{
+  color: rgb(255, 255, 255);
+
+}
+
+
+.module .addlink {
+  color: #2bb656;
+}
+
+.module .changelink{
+	color: #efb80b;
+}
+
+/*=================== ENd Site administration ===============================*/
+
+
+/*===============change_list==================*/
+
+
+/* app hieght contant */
+.module {
+	margin-bottom: 9px !important;
+}
+
+/*app details contant*/
+#content {
+  padding: 9px 35px !important;
+}
+
+
+
+.toggle-nav-sidebar:hover, .toggle-nav-sidebar:focus {
+  background-color: #2a3445;
+}
+
+.toggle-nav-sidebar {
+  font-size: 23px;
+  color: rgb(255, 255, 255);
+  background-color:#405677 !important;
+}
+
+div.breadcrumbs {
+  background: #2a3445;
+  box-shadow: 0 4px 5px rgba(0,0,0,0.2) inset;
+}
+
+
+#changelist-filter {
+	font-weight: bold;
+	background-color: black !important;  
+	box-shadow: -4px 4px 7px #201f1f;
+
+}
+
+#changelist-filter h3 {
+	font-weight: bold;
+	color: #dfff00;
+}
+
+#changelist-filter a{
+	color: white !important;
+}
+
+/*===============change_form==================*/
+.column-__str__  {
+  background-color: #2b3a51;
+  color: rgb(255, 255, 255);
+}
+
+
+#changelist {
+  background-color: #354052;
+
+}
+
+#changelist-search img {
+  /*background-color: white !important;*/
+  display: none;
+}
+
+#toolbar #searchbar {
+    height: 29px;
+
+}
+
+#toolbar{
+  background-color: #354052 !important;
+}
+
+#changelist  table thead th {
+  background-color: #2b3a51;
+}
+
+#changelist  table thead th .text a {
+  color: white;
+}
+
+#changelist .actions {
+  background-color: #354052 !important;
+  color: #fff !important;
+}
+
+.column-sub_total{
+ color: white !important;
+}
+
+.column-total_product {
+  color: white;
+}
+
+#changelist .actions select {
+  color: #fff !important;
+}
+
+.object-tools  a.addlink {
+  background-color: #2db656;
+  font-weight: bold;
+}
+
+/*------------------ Hover Style ---------------------------*/
+
+@-webkit-keyframes push-on-hover {
+  50% {
+    -webkit-transform: scale(0.8);
+    transform: scale(0.8);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+@keyframes push-on-hover {
+  50% {
+    -webkit-transform: scale(0.8);
+    transform: scale(0.8);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+.admin_shortcuts .shortcuts li a {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+}
+
+.admin_shortcuts .shortcuts li a:hover, .push-on-hover:focus, .push-on-hover:active {
+  -webkit-animation-name: push-on-hover;
+  animation-name: push-on-hover;
+  -webkit-animation-duration: 0.6s;
+  animation-duration: 0.6s;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+}
+
+
+table thead th .text a:hover, .push-on-hover:focus, .push-on-hover:active {
+  -webkit-animation-name: push-on-hover;
+  animation-name: push-on-hover;
+  -webkit-animation-duration: 0.6s;
+  animation-duration: 0.6s;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+}
+
+
+
+.admin_shortcuts .shortcuts li a:hover, .admin_shortcuts .shortcuts li a:focus {
+    background-color: #2bb656;
+}
+
+
+.object-tools a:focus, .object-tools a:hover {
+  background-color: #079ef9;
+}
+
+
+table thead th .text a:hover {
+  color:  #dfe700 !important;
+  background-color: #2b3a51 !important;
+}
+
+tbody tr th a:focus, tbody tr th a:hover {
+  color: #dfe700 !important;
+}
+
+
+/*--------------------------------*/
+
+#content-related {
+  background: #2b3647 !important;
+  margin-right: -310px;
+  display: all;
+-webkit-box-shadow: 0px 0px 23px 5px rgb(0, 0, 0);     
+-moz-box-shadow: 0px 0px 23px 5px rgb(0, 0, 0);     
+box-shadow: 0px 0px 23px 5px rgb(0, 0, 0);
+}
+
+
+#content-related .module h2 {
+  color: #deb81f;
+}
+
+#content-related h3 {
+  color: #fff;
+}
+
+body {
+  color: #405677;
+}
+
+#chart_content {
+    float: right !important;
+    width: auto;
+    position: relative;
+    margin-right: -60rem !important;
+    color: #405677 !important;
+    display: all;
+    -webkit-box-shadow: 0px 0px 23px 5px rgb(0, 0, 0);     
+    -moz-box-shadow: 0px 0px 23px 5px rgb(0, 0, 0);     
+    box-shadow: 0px 0px 23px 5px rgb(0, 0, 0);
+}
+
+
+/*==========================================*/
+
+@media only screen and (min-width: 992px) and (max-width: 1399px) {
+
+#myChart{
+     
+     width: 450px;
+}
+
+#chart_content {
+    float: right !important;
+    width: auto;
+    position: relative;
+    margin-right: -48rem !important;
+    color: #405677 !important;
+    display: all;
+    -webkit-box-shadow: 0px 0px 23px 5px rgb(0, 0, 0);     
+    -moz-box-shadow: 0px 0px 23px 5px rgb(0, 0, 0);     
+    box-shadow: 0px 0px 23px 5px rgb(0, 0, 0);
+}
+
+#content-related {
+  margin-right: -288px;
+}
+
+
+}
+
+.submit-row a.deletelink {
+  display: ruby-base !important;
+}
+
+fieldset {
+  padding: 2rem;
+}

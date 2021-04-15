@@ -3,73 +3,49 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <style type="text/css">
-        
-        .message {
-            padding: 3rem;
-            margin-left: 4rem;
-            margin-right: 4rem;
-            margin-bottom: 2rem;
-            margin-top: 4rem;
-        }
 
-        @media only screen and (max-width: 767px) {
+<style type="text/css">
+  .message {
+    padding: 3rem;
+    margin-left: 4rem;
+    margin-right: 4rem;
+    margin-bottom: 2rem;
+    margin-top: 4rem;
+  }
 
-/*           .titel{
-              text-align: center;
-           }
-*/
-            .message {
-            padding: 2rem;
-            margin-left: 1rem;
-            margin-right: 1rem;
-            margin-bottom: 2rem;
-            margin-top: 2rem;
-          }
+  @media only screen and (max-width: 767px) {
+    .message {
+      padding: 2rem;
+      margin-left: 1rem;
+      margin-right: 1rem;
+      margin-bottom: 2rem;
+      margin-top: 2rem;
+    }
 
+  }
+</style>
 
-        }
-
-
-
-    </style>
 <section class="container">
-
-
-<form class="shadow message" action="#" method="post" novalidate="novalidate">
-    <legend class="titel">WELCOME TO THE | ESHOP </legend>
-
-  <div class="form-group">
-        {% csrf_token %}
-        {{form|crispy}}
-    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-  </div>
-
-  <div class="form-group form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-  <a class="" href="{% url 'users:users-login' %}"><span class="text-success">login</span></a>
-
-
-</form>
-    
+    <form
+        class="shadow message"
+        action="#"
+        method="post"
+        novalidate="novalidate"
+    >
+        <legend class="titel">WELCOME TO THE | ESHOP</legend>
+        <div class="form-group">
+            {% csrf_token %}
+            {{form|crispy}}
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a class="" href="{% url 'users:users-login' %}">
+            <span class="text-success">login</span>
+        </a>
+    </form>
 </section>
-
 {% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

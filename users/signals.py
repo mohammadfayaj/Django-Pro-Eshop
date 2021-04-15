@@ -31,5 +31,4 @@ def create_address(sender, instance, created, **kwargs):
 def save_aut_token(sender, instance=None, created=False , **kwargs):
     if created:
     	Token.objects.create(user=instance)
-
     print('user token created.........!')

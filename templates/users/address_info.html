@@ -15,8 +15,6 @@
 
 </style>
 
-
-
 <form class="shadow p-3 mb-5 bg-white rounded" enctype="multipart/form-data" id="formUpload" method="POST">
     {% csrf_token %}
 
@@ -54,8 +52,5 @@
     <button class="btn btn-primary btn-sm font-weight-bold mt-3" type="submitt">Update</button>
     <a href="{% url 'users:users-profile' %}"  class="btn btn-primary btn-sm font-weight-bold mt-3" type="button">Back</a>
 </form>
-
-
-
 
 {% endblock %}
