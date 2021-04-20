@@ -12,7 +12,7 @@
         <div class="banner owl-carousel">
             {% for i in banner %}
             <div class="col">
-              <img src="{{i.banner_image}}">
+              <img src="{{i.banner_image.url}}" style="height: 240px">
             </div>
             {% endfor %}
         </div>
@@ -39,7 +39,7 @@
           </div>
           <div class="product__discount__item__text">
             <!-- <span>Dried Fruit</span> -->
-            <h5><a class="text-dark" href="{{i.get_absolute_url}}">{{i.titel}}</a></h5>
+            <h5><a class="text-dark" href="{{i.get_absolute_url}}">{{i.titel|truncatechars:40}}</a></h5>
             <div class="product__item__price text-dark">${{ i.price }} <span class="text-danger">$36.00</span></div>
           </div>
         </div>
@@ -88,7 +88,7 @@
           </div>
           <div class="product__discount__item__text">
             <span class="text-light">{{i.availability}}</span>
-            <h5><a class="text-light" href="{{i.get_absolute_url}}">{{ i.titel }}</a></h5>
+            <h5><a class="text-light" href="{{i.get_absolute_url}}">{{ i.titel|truncatechars:40}}</a></h5>
             <div class="product__item__price text-light">${{ i.price }} <span class="text-danger">${{i.old_price}}</span></div>
           </div>
         </div>
@@ -141,7 +141,7 @@
                 </div>
                 <div class="blog__item__text product__discount__item__text">
                     <ul>
-                        <h6><a class="text-dark" href="{{i.get_absolute_url}}">{{ i.titel }}</a></h6>
+                        <h6><a class="text-dark" href="{{i.get_absolute_url}}">{{ i.titel|truncatechars:40}}</a></h6>
                         <li class="product__item__price text-dark"><i class="fas fa-money-check-alt"></i> ${{ i.price }} <span class="text-dark">$36.00</span></li>
                     </ul>
                 </div>

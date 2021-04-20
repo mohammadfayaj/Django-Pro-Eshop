@@ -20,16 +20,18 @@
                         src=" {{ product_details.images.url }} " alt="">
                 </div>
 
-
-
                 <div class="product__details__pic__slider owl-carousel">
-                    {% if not product_details.images_1 %}
-                         <p>Image Not Found</p>
-                    {% else  %}
-                    <img src=" {{ product_details.images_1.url }}" alt="">
-                    <img src=" {{ product_details.images_2.url }}" alt="">
-                    <img src=" {{ product_details.images_3.url }}" alt="">                    
+
+                    {% if product_details.images_1 %}
+                    <img src=" {{ product_details.images_1.url }}" alt="" style="width: 80%">
                     {% endif %}
+                    {% if product_details.images_2 %}
+                    <img src=" {{ product_details.images_2.url }}" alt="" style="width: 80%">
+                    {% endif %}
+                    {% if product_details.images_3 %}
+                    <img src=" {{ product_details.images_3.url }}" alt="" style="width: 80%">
+                    {% endif %}                
+
         
                 </div>
             </div>
@@ -38,83 +40,25 @@
 
         <div class="col-lg-6 col-md-6">
             <div class="product__details__text">
-                <h3>{{product_details.titel}}</h3>
+                <h4 class='ui font-weight-bold'>{{product_details.titel}}</h4> </br>
                 <div class="product__details__rating">
                     {% ratings product_details %}  <!-- #came cart/cart_template_tags.py -->
-
 
                     <!-- product_details its a context variable form ProductItem Model and reviews_set(reviews its a foreignkey)(_set django convention) -->
                     <a class="jumper" href="#myForm"><span>({{ product_details.reviews_set.all|length }} reviews)</span></a>
                     <!-- href content the from id! this id came form review.html -->
 
-
                 </div>
                 <div class="product__details__price">${{product_details.price}}</div>
-                <!-- <div class="product__details__quantity">
-                    <div class="quantity">
-                   we will add quantity
-                    </div>
-                </div> -->
-                 
 
-                {% if product_details.quantity < 2 %}
+                {% if product_details.quantity < 1 %}
                 <a class="primary-btn ml-2" href="{%  url 'cart:add_wish_list' product_details.slug  %}"><span class="icon_heart_alt"></span> Add to Wish List</a>
                 <p class="small text-mute">Sorry Product Isn't available</p>
                 {% else %}
                 <a href="{% url 'cart:add_to_cart' product_details.slug %}" class="primary-btn">ADD TO CARD</a>
                 {% endif %}
                 
-            <form class="ui form mt-2" action="" method="post" id='size_form'>
-                {% csrf_token %}
-                <div class="row">
-                    {% if models.is_it_Shoes is True %}
-                    <div class="col">
-                        <label for="">Size</label>
-                        <select id="shoes_size_id" class="ui fluid dropdown" style="width: 30%;">
-                            <option value="">------</option>
-                            <option value="36">36</option>
-                            <option value="37">37</option>
-                            <option value="38">38</option>
-                            <option value="39">39</option>
-                            <option value="40">40</option>
-                            <option value="41">41</option>
-                            <option value="42">42</option>
-                            <option value="43">43</option>
-                        </select>
-                    </div>
-                    {% endif %}
-                    {% if models.is_it_shirt is True %}
-                    <div class="col">
-                        <label for="">Size</label>
-                        <select id="shirt_size_id" class="ui fluid dropdown" style="width: 30%;">
-                            <option id="shirt_size_m" value="">------</option>
-                            <option value="M">M</option>
-                            <option value="L">L</option>
-                            <option value="XL">XL</option>
-                            <option value="XXL">XXL</option>
-                        </select>
-                    </div>
-                    {% endif %}
-                    {% if models.is_it_pant is True %}
-                    <div class="col">
-                        <label for="">Size</label>
-                        <select id="pant_size_id" class="ui fluid dropdown" style="width: 30%;">
-                            <option value="">------</option>
-                            <option value="28">28</option>
-                            <option value="30">30</option>
-                            <option value="32">32</option>
-                            <option value="34">34</option>
-                            <option value="36">36</option>
-                            <option value="38">38</option>
-                        </select>
-                    </div>
-                    {% endif %}
-
-                </div>
-                    <input id="size_submit_id" class="btn btn-sm btn-success mt-3" type='submit' value='Test button' style="display: none;"/>
-                    <div id='message'></div>
-            </form>
-            <ul>
+                <ul>
                     {% if product_details.quantity < 2 %}
                     <li><b>Availability</b> <span>Out of stock</span></li>
                     {% else %}
@@ -138,8 +82,8 @@
                         </div>
                     </li>
 
-
                 </ul>
+
             </div>
         </div>
 
@@ -207,7 +151,7 @@
                     </ul>
                 </div>
                 <div class="product__item__text">
-                    <h6><a href="#">{{i.titel}}</a></h6>
+                    <h6><a href="#">{{i.titel|truncatechars:40}}</a></h6>
                     <h5>{{i.price}}</h5>
                 </div>
             </div>
@@ -254,72 +198,6 @@ $(document).ready(function() {
 });
 
 
-    // getCookie Provided by Django in the Official Docs
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-    const csrftoken = getCookie('csrftoken');
-
-
-$(document).ready(function () {
-  $("#size_form").submit(function (event) {
-    var a = "/shop/product_details/{{models.slug}}/";
-    $.ajax({
-      type: "POST",
-      url: a,
-
-    data: {
-            state:"inactive",
-            shoes_data: $('#shoes_size_id').val(),
-            shirt_data: $('#shirt_size_id').val(),
-            pant_data: $('#pant_size_id').val(),
-    },
-
-    beforeSend: function (xhr) {
-    xhr.setRequestHeader("X-CSRFToken", csrftoken);
-    },
-
-    success: function () {
-        setTimeout(function(){
-             $('#message').html("<small class='text-danger font-weight-bold'>Submitted.</small>").delay(3000).fadeOut(300);
-            });
-      }
-
-    });
-    return false; 
-  });
-
-});
-$(document).ready(function(){
-    $('#shoes_size_id').on('click', function() { 
-        $('#size_submit_id').trigger('click');
-    });
-  });
-
-  $(document).ready(function(){
-    $('#shirt_size_id').on('click', function() { 
-        $('#size_submit_id').trigger('click');
-    });
-  });
-  $(document).ready(function(){
-    $('#pant_size_id').on('click', function() { 
-        $('#size_submit_id').trigger('click');
-    });
-  });
-
-//option value
 </script>
 
 

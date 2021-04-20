@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 ''' Django Notifications example views '''
 from distutils.version import StrictVersion  # pylint: disable=no-name-in-module,import-error
-
 from django import get_version
 from django.contrib.auth.decorators import login_required
 from django.forms import model_to_dict
@@ -13,6 +12,8 @@ from notifications.models import Notification
 from notifications.utils import id2slug, slug2id
 from notifications.settings import get_config
 from django.views.decorators.cache import never_cache
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
 
 if StrictVersion(get_version()) >= StrictVersion('1.7.0'):
     from django.http import JsonResponse  # noqa
@@ -28,6 +29,17 @@ else:
         return HttpResponse(
             json.dumps(data, default=date_handler),
             content_type="application/json")
+
+
+def hide_notification(request, notification_slug):
+    try:
+        notification = Notification.objects.get(recipient=request.user, notification_slug=notification_slug)
+        notification.recipient.remove(request.user)
+        # notification.remove(recipient=request.user)
+        return redirect('notifications:all')
+    except ObjectDoesNotExist:
+        messages.info(request, "You don't have any Notifications")
+        return redirect('notifications:all')
 
 
 class NotificationViewList(ListView):
@@ -80,7 +92,6 @@ def mark_all_as_read(request):
 #     if _next:
 #         return redirect(_next)
 #     return redirect('')
-
 
 
 

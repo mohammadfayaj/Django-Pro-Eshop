@@ -1,20 +1,23 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from PIL import Image
-from django.core.files import File
+
 from users.models import Profile,Address,Deliverycharges
 from intl_tel_input.widgets import IntlTelInputWidget
 from phonenumber_field.modelfields import PhoneNumberField
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
 
-
+from django.core.files import File
+from PIL import Image ,TiffImagePlugin
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import sys
+import os
 
 class DeliveryChargesForm(forms.ModelForm):
     class Meta:
         model = Deliverycharges
         fields = ('delivery_charge',)
-
 
 
 class AddressForm(forms.ModelForm):                          
@@ -28,8 +31,11 @@ class AddressForm(forms.ModelForm):
 
            }
 
+from django.core.files.storage import default_storage as storage
 
 class ProfileUpdateForm(forms.ModelForm):
+    # TiffImagePlugin.DEBUG = True
+
     x = forms.FloatField(widget=forms.HiddenInput())
     y = forms.FloatField(widget=forms.HiddenInput())
     width = forms.FloatField(widget=forms.HiddenInput())
@@ -44,7 +50,7 @@ class ProfileUpdateForm(forms.ModelForm):
             })
         }
 
-    def save(self):
+    def save(self, *args, **kwargs):
         photo = super(ProfileUpdateForm, self).save()
 
         x = self.cleaned_data.get('x')
@@ -55,9 +61,18 @@ class ProfileUpdateForm(forms.ModelForm):
         image = Image.open(photo.file)
         cropped_image = image.crop((x, y, w+x, h+y))
         resized_image = cropped_image.resize((400, 400), Image.ANTIALIAS)
-        resized_image.save(photo.file.path)
+
+        storage_path = storage.open(photo.file.name, "wb")
+        print(f'{storage_path} this is a path....!')
+        resized_image.save(storage_path, 'JPEG')
+
+        storage_path.close()
 
         return photo
+
+
+
+
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()

@@ -13,6 +13,26 @@ from cart.forms import CouponForm
 from notifications.signals import notify
 from shop.models import ProductItem
 
+
+def size(request, slug):
+    models = ProductItem.objects.get(slug=slug)
+    template = 'cart/shoping-cart.html'
+    if request.method == 'POST' or request.is_ajax():
+        model = Order.objects.get(user=request.user, ordered=False)
+        model.shoes_size = request.POST.get('shoes_data')
+        model.shirt_size = request.POST.get('shirt_data')
+        model.pant_size = request.POST.get('pant_data')
+
+        model.user = request.user
+        model.save()
+
+        messages.success(request, f"Success!!")
+    else:
+        return redirect("cart:cart-list-view")
+    context = {'models': models}
+    return render (request, template, context)
+
+
 def AdminChart(request):
     template = 'admin/index.html'
     orders = Order.objects.filter(ordered=True).count()

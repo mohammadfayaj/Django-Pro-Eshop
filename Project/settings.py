@@ -48,26 +48,23 @@ DATABASES = { 'default': dj_database_url.config() }
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ['127.0.0.1', ] # list of domains name
-
+ALLOWED_HOSTS = ['*'] # list of domains name
 
 # HTTPS settings
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SECURE_SSL_REDIRECT = True
-# 
+
 # HSTS settings
 SECURE_HSTS_SECONDS = 60
 SECURE_HSTS_PRELOAD = True
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-
 
 # Third pary app settings
 STAR_RATINGS_RERATE = True
 DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True}
 DJANGO_NOTIFICATIONS_CONFIG = { 'SOFT_DELETE': True}
 CRISPY_TEMPLATE_PACK = "bootstrap4"
-
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
@@ -86,9 +83,9 @@ CLOUDINARY_STORAGE = {
 }
 
 # Static files (CSS, JavaScript, Images)
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+MEDIA_URL = os.path.join(BASE_DIR, '/media/')
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Static settings
 STATIC_URL= '/static/'
@@ -144,13 +141,14 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     'notifications.apps.NotificationsConfig',
     'cloudinary_storage',
+    # 'cloudinary',
 
 ]
 
 
 ROOT_URLCONF = 'Project.urls'
 WSGI_APPLICATION = 'Project.wsgi.application'
-
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -253,20 +251,21 @@ ADMIN_SHORTCUTS = [
         'shortcuts': [
 
             {
-                'title': 'user',
+                'title': 'User',
                 'url': '/admin/auth/user/',
                 'has_perms': 'example.utils.has_perms_to_users',
             },
 
             {
-                'title': 'Customer Address',
+                'title': 'User Address',
                 'url': '/admin/users/address/',
                 'icon' : 'address-card',
             },
 
             {
-                'title': 'Order',
+                'title': 'Orders',
                 'url': '/admin/cart/order/',
+                'icon' : 'barcode',
                 # 'count': 'cart.order.orders',
             },
 
@@ -276,6 +275,11 @@ ADMIN_SHORTCUTS = [
                 
             },
 
+            {
+                'title' : 'Categories',
+                'url' : '/admin/shop/category/',
+
+            },
 
             {
                 'title': 'Create Blog Post',
@@ -290,10 +294,11 @@ ADMIN_SHORTCUTS = [
             {
                 'title': 'Send Notification',
                 'url': '/admin/notifications/notification/',
+                'icon': 'bell'
             },
 
             {
-                'title': 'Change Delivery Charge',
+                'title': 'Delivery Charge',
                 'url': '/admin/users/deliverycharges/',
                 'icon': 'truck',
 
@@ -305,6 +310,13 @@ ADMIN_SHORTCUTS = [
 
 
 ]
+
+
+ADMIN_SHORTCUTS_SETTINGS = {
+    'show_on_all_pages': True,
+    'hide_app_list': False,
+    'open_new_window': False,
+}
 
 
 # ========== SOCIAL_AUTH =============

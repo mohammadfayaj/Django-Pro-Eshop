@@ -9,35 +9,48 @@
   <a href="{% url 'shop:product_list' %}" class="ui horizontal green label"> Cancel Order</a>
 </div>
 
-<div class="ui container mt-5">
-  <legend class="font-weight-bold">Choose your payment</legend>
-  <div class="row shadow mt-3">
 
-     <!-- Stripe payment -->
-    <div class="col card">
-      <a href="{% url 'checkout:stripe-payment' %}"><img src="{% static 'img/payment/stripe-logo-blue.png' %}"></a>
+<div class="ui link four doubling cards container mt-5 mb-5">
+
+  <div class="card shadow">
+
+    <div class="">
+      <a class="ui medium rounded image" href="{% url 'checkout:stripe-payment' %}"><img src="{% static 'img/payment/stripe.png' %}"></a>
     </div>
 
-     <!-- Cash on Delivery -->
-    <div class="col card">
+  </div>
+
+  <div class="card shadow">
+
+    <div class="">
       {% for i in order %}
-      <a href="{{i.get_absolute_url}}"><img src="{% static 'img/payment/cash.png' %}"></a>
+        <a class="ui medium rounded image" href="{{i.get_absolute_url}}"><img src="{% static 'img/payment/cash.png' %}"></a>
       {% endfor %}
     </div>
+    
+  </div>
 
-    <!-- Bkash Payment -->
-    <div class="col card">
+  <div class="card shadow">
+
+    <div class="">
       {% for i in order %}
-      <a href='{% url "checkout:bkash_pyment" i.id %}'><img src="{% static 'img/payment/bkash.png' %}">
+        <a class="ui medium rounded image" href="{% url "checkout:bkash_pyment" i.id %}"><img src="{% static 'img/payment/bkash.png' %}"></a>
       {% endfor %}
     </div>
+    
+  </div>
 
-    <!-- Paypal Payment -->
-    <div class="col card">
-      <a href=''><img src="{% static 'img/payment/paypal.png' %}">
+  <div class="card shadow">
+
+    <div class="">
+
+        <a class="ui medium rounded image" href="#"><img src="{% static 'img/payment/paypal.png' %}"></a>
+
     </div>
 
-   </div>
+  </div>
+
+
 </div>
 
 {% endblock %}

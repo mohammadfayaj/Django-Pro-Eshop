@@ -12,7 +12,7 @@
       padding: 0;
     }
     #cssmenu ul {
-      position: relative;
+      position: revert; /* Problem Solved */
       z-index: 597;
       float: left;
     }

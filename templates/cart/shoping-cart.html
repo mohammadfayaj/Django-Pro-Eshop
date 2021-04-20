@@ -3,7 +3,6 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-section set-bg container" data-setbg="{% static 'img/cart_header.jpg' %}">
     <div class="container">
@@ -24,149 +23,259 @@
 
 <style type="text/css">
 
-.shoping__cart__item img {
-    width: 100px;
-    height: 100px;
-    }
+    @media only screen and (max-width: 767px) {
 
-@media only screen and (max-width: 767px) {
-
-    .shoping__cart__item h5 {
-        font-size: 10px;
-    }
-
-    .shoping__cart__item img {
-    width: 50px;
-    height: 50px;
-    }
-
-    .shoping__cart__price span{
-        font-size: 10px;
-    }
-
-    .shoping__cart__total span{
-        font-size: 10px;
-    }
-
-    .shoping__cart__table th span {
-        font-size: 10px;
 
     }
-
-
-}
-
 </style>
+
+<section class="container shoping-cart spad">
+    <table class="ui celled red padded table">
+        <thead>
+            <tr>
+                <th class=""><span>Products</span></th>
+                <th><span>Select Size</span></th>
+                <th><span>Price</span></th>
+                <th><span>Quantity</span></th>
+                <th><span>Total</span></th>
+                <th><span>Remove</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if empty %}
+            <!-- If there is no Wish objects -->
+            <table class="table mt-5">
+                <tbody>
+                    <tr>
+                        <td class="h1 text-danger mt-5">{{ empty_massage }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% else %}
+
+            {% if cart.items != None %}
+
+            {% for i in cart.items.all %}
+            <!-- Start For loop -->
+            <tr>
+                <td>
+                    <h5 class="ui aligned header">
+                        <img src="{{ i.item.images.url }}" class="ui medium rounded image">
+                        {{i.item.titel|truncatechars:40}}
+                    </h5>
+                </td>
+                <td class="single line">
+                    <form class="ui form" action="" method="post" id='size_form'>
+                        {% csrf_token %}
+                        <div class="row">
+                            {% if i.item.is_it_Shoes is True %}
+                            <div class="col">
+                                <select id="shoes_size_id" class="ui fluid dropdown" style="width: 100%;">
+                                    <option value="">------</option>
+                                    <option value="36">36</option>
+                                    <option value="37">37</option>
+                                    <option value="38">38</option>
+                                    <option value="39">39</option>
+                                    <option value="40">40</option>
+                                    <option value="41">41</option>
+                                    <option value="42">42</option>
+                                    <option value="43">43</option>
+                                </select>
+                            </div>
+                            {% endif %}
+                            {% if i.item.is_it_shirt is True %}
+                            <div class="col">
+                                <select id="shirt_size_id" class="ui fluid dropdown" style="width: 100%;">
+                                    <option id="shirt_size_m" value="">------</option>
+                                    <option value="M">M</option>
+                                    <option value="L">L</option>
+                                    <option value="XL">XL</option>
+                                    <option value="XXL">XXL</option>
+                                </select>
+                            </div>
+                            {% endif %}
+                            {% if i.item.is_it_pant is True %}
+                            <div class="col">
+                                <select id="pant_size_id" class="ui fluid dropdown" style="width: 100%;">
+                                    <option value="">------</option>
+                                    <option value="28">28</option>
+                                    <option value="30">30</option>
+                                    <option value="32">32</option>
+                                    <option value="34">34</option>
+                                    <option value="36">36</option>
+                                    <option value="38">38</option>
+                                </select>
+                            </div>
+                            {% endif %}
+
+                        </div>
+                        <input id="size_submit_id" class="btn btn-sm btn-success mt-3" type='submit' value='Test button'
+                            style="display: none;" />
+                        <div id='message'></div>
+                    </form>
+                </td>
+                <td>
+                    <span>$ {{ i.item.price }}</span>
+                </td>
+                <td class="">
+                    <div class="quantitylll">
+                        <div class="pro-slug">
+                            <a href="{% url 'cart:remove-from-quantity' i.item.slug %}"><i class="fa fa-minus mr-2"></i></a>
+                                {{ i.quantity }}
+                            <a href="{% url 'cart:add-to-quantity' i.item.slug %}"><i class="fa fa-plus ml-2"></i></a>
+                        </div>
+                    </div>
+                <td>
+                    <p class="font-weight-bold ui horizontal label red">{{i.get_total_item_price}} $</p>
+                </td>
+                </td>
+                <td><a class="btn btn-md" href="{% url 'cart:remove-from-cart' i.item.slug %}"><i class="fa fa-trash"></i></a></td>
+            </tr>
+            {% empty %}
+            <!-- empty should be inside the for statement  -->
+
+            <tr>
+                <td>{{empty_massage}}</td>
+            </tr>
+
+            {% endfor %}
+
+            {% endif %}
+            {% endif %}
+
+        </tbody>
+
+        <tfoot>
+        </tfoot>
+
+    </table>
+
+</section>
 
 
 <!-- Shoping Cart Section Begin -->
-<section class="shoping-cart spad">
-<div class="container">
-<div class="row">
-    <div class="col-lg-12">
-        <div class="shoping__cart__table">
-            <table>
-            <thead>
-                <tr>
-                    <th class="shoping__product"><span>Products</span></th>
-                    <th><span>Price</span></th>
-                    <th><span>Quantity</span></th>
-                    <th><span>Total</span></th>
-                    <th><span>Remove</span></th>
-                </tr>
-            </thead>
-            <tbody>
+<section class="shoping-cart">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="shoping__continue">
+                    <div class="shoping__discount">
+                        <h5>Discount Codes</h5>
 
-             {%  if cart.items != None %}
+                        <style type="text/css">
+                            #coupon_form label {
+                                display: none;
+                            }
 
-             {% for i in cart.items.all %} <!-- Start For loop -->
-            <tr> 
-                <td class="shoping__cart__item">
-                    <img src="{{ i.item.images.url }}" alt="">
-                    <h5>{{i.item.titel}}</h5>
-                </td>
-                <td class="shoping__cart__price"> <span>$ {{ i.item.price }}</span></td>
-                <td class="shoping__cart__quantity">
-                    <div class="quantitylll">
-                        <div class="pro-slug">
-                            <a href="{% url 'cart:remove-from-quantity' i.item.slug %}"><i class="fas fa-minus mr-2"></i></a>
-                                                       {{ i.quantity }}
-                            <a href="{% url 'cart:add-to-quantity' i.item.slug %}"><i class="fas fa-plus ml-2"></i></a>
-                        </div>
+                            .site-btn {
+                                background-color: #f03250 !important;
+                            }
+                        </style>
+
+                        <form id="coupon_form" action="#" method="POST">
+                            {% csrf_token %}
+                            {{ form }}
+                            <button type="submit" class="site-btn mt-2">APPLY COUPON</button>
+                        </form>
+
                     </div>
-                </td>
-                <td class="shoping__cart__total">
-                  <span>{{i.get_total_item_price}} </span>
-                </td>
-                <td class="shoping__cart__item__close">
-                <a class="btn btn-md" href="{% url 'cart:remove-from-cart' i.item.slug %}"><i class="fas fa-trash-alt"></i></a>
-                </td>
-            </tr>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="shoping__checkout">
+                    <h5>Cart Total</h5>
+                    <ul>
 
-            {% empty %} <!-- empty should be inside the for statement  -->
-
-            <tr><td>{{empty_massage}}</td></tr>
-
-            {% endfor %}  
-
-            {% endif %}
+                        {% if cart.coupon %}
+                        <li>Coupon <span>-${{ cart.coupon.amount }}</span></li>
+                        {% endif %}
 
 
-            </tbody>
+                        <hr>
+                        <li>SUBTOTAL <span>{{cart.show_cart_list_total}} $</span></li>
 
-        </table>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-6">
-        <div class="shoping__continue">
-            <div class="shoping__discount">
-                <h5>Discount Codes</h5>
-
-                 <style type="text/css">
-                 #coupon_form label {
-                   display: none;
-                 }
-
-                 .site-btn {
-                    background-color: #f03250 !important;
-                 }
-
-                </style>
-
-                <form id="coupon_form" action="#" method="POST">
-                    {% csrf_token %}
-                    {{ form }}
-                    <button type="submit" class="site-btn mt-2">APPLY COUPON</button>
-                </form>
-
+                    </ul>
+                    {% if cart.items != None %}
+                    <a href="{% url 'checkout:check-out' cart.id %}" class="primary-btn">PROCEED TO CHECKOUT</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-6">
-        <div class="shoping__checkout">
-            <h5>Cart Total</h5>
-            <ul>
-
-            {% if cart.coupon %}
-            <li>Coupon <span>-${{ cart.coupon.amount }}</span></li>
-            {% endif %}
-
-
-            <hr>
-            <li>SUBTOTAL <span>{{cart.show_cart_list_total}}</span></li>
-    
-            </ul>
-            {%  if cart.items != None %}
-            <a href="{% url 'checkout:check-out' cart.id %}" class="primary-btn">PROCEED TO CHECKOUT</a>
-            {% endif %}
-        </div>
-    </div>
-</div>
-</div>
 </section>
-    <!-- Shoping Cart Section End -->
-<!-- End If Statemant [This is come from line 7] -->
+<!-- Shoping Cart Section End -->
+
+<script type="text/javascript">
+
+    // getCookie Provided by Django in the Official Docs
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    // start ajax function
+    $(document).ready(function () {
+        $("#size_form").submit(function (event) {
+            {% for i in cart.items.all %}
+            var a = "/cart/size/{{i.item.slug}}/";
+            {% endfor %}
+            $.ajax({
+                type: "POST",
+                url: a,
+                data: {
+                    state: "inactive",
+                    shoes_data: $('#shoes_size_id').val(),
+                    shirt_data: $('#shirt_size_id').val(),
+                    pant_data: $('#pant_size_id').val(),
+                },
+
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                },
+
+                success: function () {
+                    setTimeout(function () {
+                        $('#message').html("<small class='text-danger font-weight-bold'>Submitted.</small>").delay(3000).fadeOut(300);
+                    });
+                }
+
+            });
+            return false;
+        });
+
+    });
+
+    // Auto Click Funciton
+    $(document).ready(function () {
+        $('#shoes_size_id').on('click', function () {
+            $('#size_submit_id').trigger('click');
+        });
+    });
+
+    $(document).ready(function () {
+        $('#shirt_size_id').on('click', function () {
+            $('#size_submit_id').trigger('click');
+        });
+    });
+    $(document).ready(function () {
+        $('#pant_size_id').on('click', function () {
+            $('#size_submit_id').trigger('click');
+        });
+    });
+
+</script>
+
 
 {% endblock %}

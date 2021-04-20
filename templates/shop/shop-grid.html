@@ -53,7 +53,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="section-title product__discount__title">
-          <h6><span class="text-danger">{{ count|count_total_product_item }}</span> Products found</h6>
+          <h6><span class="text-danger">Total We Have {{ count|count_total_product_item }}</span> Products In Our Store</h6>
           <h2 class="text-dark">All Product</h2>
         </div>
       </div>
@@ -73,7 +73,7 @@
         </ul>
       </div>
       <div class="product__item__text">
-        <h6><a class="text-dark" href="{{i.get_absolute_url}}">{{ i.titel }}</a></h6>
+        <h6><a class="text-dark" href="{{i.get_absolute_url}}">{{ i.titel|truncatechars:40 }}</a></h6>
         {% if i.quantity < 2 %}
         <small class="text-small font-weight-bold">Out of stock</small>
         {% else %}
@@ -83,7 +83,7 @@
           <li class="price font-weight-bold">${{ i.price }} </li>
           <li class="price text-danger" style="text-decoration: line-through;">${{ i.old_price }} </li>
         </div>
-        {% if i.quantity < 2 %}
+        {% if i.quantity < 1 %}
         <a class="btn btn-sm btn-success ml-2" id="link" href="{% url 'cart:add_wish_list' i.slug %}">Wish List</a>
         <p class="small text-mute">Sorry Product Isn't available</p>
         {% else %}
@@ -97,12 +97,6 @@
 
  {% endif %}
 
-<!--  <script>
-  var url = "{% url 'cart:add_wish_list' i.slug %}";
-  document.getElementById("link").setAttribute("href",url);
-  </script>
- -->
- 
  {% empty %}
 
  <p class="text-small font-weight-bold text-danger">Sorry We Couldn't Found Any Product Your Search </p>

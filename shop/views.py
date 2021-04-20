@@ -11,7 +11,7 @@ from shop.forms import ReviewsFrom
 from shop.models import ProductItem,Category,Reviews
 from cart.models import CartItem,Order
 from users.models import Profile
-
+from django.contrib.auth.decorators import login_required
 
 def Product_List(request):
     template = 'shop/shop-grid.html'
@@ -73,18 +73,6 @@ def product_details_and_review(request, product_slug):
     # [node.get_descendants(include_self=True)for node in Reviews.objects.all() ]
 
     models = ProductItem.objects.get(slug=product_slug)
-    if request.method == 'POST':
-        model = Order.objects.get(user=request.user, ordered=False)
-        model.shoes_size = request.POST.get('shoes_data')
-        model.shirt_size = request.POST.get('shirt_data')
-        model.pant_size = request.POST.get('pant_data')
-
-        model.user = request.user
-        model.save()
-
-        messages.success(request, f"Success!!")
-    else:
-        pass
 
     user_review = None  # first Assign user_review none
 
@@ -102,6 +90,7 @@ def product_details_and_review(request, product_slug):
             return HttpResponseRedirect('.')
     else:
         form = ReviewsFrom()
+
     context = {
         'form': form,
         'review': review,
@@ -123,14 +112,18 @@ def ReviewList(request):
     return render(request, template, context)
 
 
+@login_required
 def ReviewUpdate(request, id, **kwargs):
     template = 'shop/review_update_form.html'
-    instance = get_object_or_404(Reviews, id=id)
-    form = ReviewsFrom(request.POST or None, instance=instance)
-    if form.is_valid():
-        form.save()
-        next = request.POST.get('next', '/')
-        return HttpResponseRedirect(next)
+    qs_instance = get_object_or_404(Reviews, id=id, user=request.user)
+    if request.method == "POST":
+        form = ReviewsFrom(request.POST, request.FILES or None, instance=qs_instance)
+        if form.is_valid():
+            form.save()
+            next = request.POST.get('next', '/') # send back to the previous url
+            return HttpResponseRedirect(next)
+    else:
+        form = ReviewsFrom(instance=qs_instance)
     context = {
         'form': form,
     }
@@ -138,10 +131,10 @@ def ReviewUpdate(request, id, **kwargs):
     return render(request, template, context)
 
 
+@login_required
 def ReviewDelete(request, id, **kwargs):
     template = 'shop/review_delete_form.html'
-    instance = get_object_or_404(Reviews, id=id)
-    # form = ReviewsFrom(request.POST or None, instance=instance)
+    instance = get_object_or_404(Reviews, id=id, user=request.user)
     if request.method == 'POST':
         instance.delete()
         next = request.POST.get('next', '/')

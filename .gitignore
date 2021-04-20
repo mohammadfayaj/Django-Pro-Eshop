@@ -177,7 +177,7 @@ UpgradeLog*.htm
 # SQL Server files
 *.mdf
 *.ldf
-
+*.sqlite3
 # Business Intelligence projects
 *.rdl.data
 *.bim.layout
@@ -196,3 +196,4 @@ FakesAssemblies/
 *.opt
 *.vscode
 *env
+*.env

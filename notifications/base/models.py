@@ -169,7 +169,7 @@ class AbstractNotification(models.Model):
     unread = models.BooleanField(default=True, blank=False, db_index=True)
 
     actor_content_type = models.ForeignKey(ContentType, related_name='notify_actor',on_delete=models.CASCADE,help_text='Select- auth | user')
-    actor_object_id = models.CharField(max_length=255,help_text='Same As Recipient Field')
+    actor_object_id = models.CharField(max_length=255,help_text='Same As Recipient Field',default=1)
     actor = GenericForeignKey('actor_content_type', 'actor_object_id')
 
     verb = models.CharField(max_length=255, help_text='Your Notification Title')

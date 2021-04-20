@@ -14,11 +14,16 @@
 
 <div id='cssmenu'>
 <ul>
+    {% if node.is_leaf_node %}
    <li class='active has-sub'><a href="{% url 'shop:category-list' node.slug %}"><span>{{ node.name }}</span></a>
+    {% else %}
+   <li class='active has-sub'><a href="#"><span>{{ node.name }}</span></a>
+    {% endif %}
+
       <ul>
     {% if not node.is_leaf_node %}
     {% for child in node.children.all %}
-         <li class=''><a href="{% url 'shop:category-list' child.slug %}"><span>{{ child }}</span></a></li>
+         <li class='has-sub'><a href="{% url 'shop:category-list' child.slug %}"><span>{{ child }}</span></a></li>
     {% endfor %}
     {% endif %}
       </ul>
@@ -29,7 +34,6 @@
 {% endrecursetree %}
 </div>
 
-
 <div class="sidebar__item">
 
  <div class="price-range-wrap">
@@ -37,7 +41,7 @@
 
      <form method="get">
         {{ filter.form.colors|as_crispy_field }}
-         <p>add feature filter with star ratings</p>
+         {% comment %} <p>add feature filter with star ratings</p> {% endcomment %}
 
         <button type="submit" id="color_search_btn" class="site-btn" style="display: none;">SEARCH</button>
      </form>
@@ -129,6 +133,8 @@
         </label>
     </div>
 </div> -->
+
+</script> 
 
 </div>
 </div>

@@ -1,7 +1,7 @@
 ''' Django notification urls file '''
 # -*- coding: utf-8 -*-
 from distutils.version import StrictVersion  # pylint: disable=no-name-in-module,import-error
-
+from django.urls import path
 from django import get_version
 from django.conf.urls.static import static
 from django.conf import settings
@@ -15,6 +15,7 @@ else:
 
 urlpatterns = [
     pattern(r'^$', views.AllNotificationsList.as_view(), name='all'),
+    path('hide-notification/<notification_slug>/', views.hide_notification, name='hide_notification'),
     pattern(r'^unread/$', views.UnreadNotificationsList.as_view(), name='unread'),
     pattern(r'^mark-all-as-read/$', views.mark_all_as_read, name='mark_all_as_read'),
     # pattern(r'^mark-all-as-read-in-admin/$', views.mark_all_as_read_in_admin, name='mark_all_as_read_admin'),
@@ -26,6 +27,5 @@ urlpatterns = [
     pattern(r'^api/unread_list/$', views.live_unread_notification_list, name='live_unread_notification_list'),
     pattern(r'^api/all_list/', views.live_all_notification_list, name='live_all_notification_list'),
 ] 
-# + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 app_name = 'notifications'

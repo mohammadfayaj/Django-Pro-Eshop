@@ -1,10 +1,10 @@
-<div class="alert alert-block alert-{{ notice.level }}">
+<div class="alert alert-block alert-{{ notice.level }} ui">
 
-  <a class="close pull-right text-danger" href="{% url 'notifications:delete' notice.slug %}">
-    <i class="fas fa-times-circle"></i>
+  <a class="close pull-right text-danger" href="{% url 'notifications:hide_notification' notice.notification_slug %}">
+    <i class="fa fa-times-circle"></i>
   </a>
 
-  <h4><i class="circular small inverted black envelope icon {% if notice.unread %}-alt{% endif %}"></i>
+  <h4><i class="circular small inverted green envelope icon {% if notice.unread %}-alt{% endif %}"></i>
     <a class="text-dark h5" href="{% url 'notifications:mark_as_read' notice.slug %}">
     {{ notice.verb }}</a> <hr>
     {% if not notice.image %}
@@ -26,6 +26,7 @@
     {% for action in notice.data.actions %}
       <a class="btn" href="{{ action.href }}">{{ action.title }}</a>
     {% endfor %}
+    <a href="{{notice.attach_url}}" class="font-weight-bold text-primary">Check Out Now</a>
   </div>
 
 </div>
@@ -43,3 +44,6 @@ a {
 }
 
 </style>
+
+
+

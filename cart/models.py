@@ -15,7 +15,7 @@ class WishList(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     ordered = models.BooleanField(default=False)
     is_product_available = models.BooleanField(default=False)
-    item = models.ForeignKey(ProductItem, on_delete=models.CASCADE)
+    item = models.ForeignKey(ProductItem, on_delete=models.CASCADE, null=True)
     wishlist_id  = models.CharField(max_length=250, null=True, blank=True)
 
     def __str__(self):
@@ -72,6 +72,7 @@ class Order(models.Model):
         return self.user.username
 
     class Meta:
+        ordering = ['-ordered']
         verbose_name_plural = 'Customer Order'
 
     def total_product(self,):

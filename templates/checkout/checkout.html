@@ -142,11 +142,6 @@ display: all;
   <!-- ============================= -->
 
 
-    <button type="submit" class="site-btn mb-3">Proceed to Pay</button>
-
-</form>
-
-
     <p>Create an account by entering the information below. 
         If you are a returning customer
         please login at the top of the page</p>
@@ -160,81 +155,86 @@ display: all;
 </div>
 
 
-<div class="col-lg-4 col-md-6 card-profile shadow bg-white rounded" id="card-profile">
+<div class="col-lg-4 col-md-6 card-profile shadow bg-white rounded p-4" id="card-profile">
   <h4>Your Order</h4>
 
-{% for i in order.items.all %}
-  <div class="row mt-3">
-    <div class="col">
-        <img  style="float: right; width: 50px; height: 50px;" src="{{ i.item.images.url }}" alt="" >
-        <p>{{i.item.titel}}</p>
-        </select>
-     </div>
-  </div>
-{% endfor %}<hr>
-<!-- =========================== -->
-  <div class="row">
-    <div class="col">
+    {% for i in order.items.all %}
+    <div class="row mt-3">
+      <div class="col">
+        <h5 class="ui aligned header">
+          <img src="{{ i.item.images.url }}" class="ui small rounded image">
+          <a class="text-dark" href="{% url 'shop:product-details' i.item.slug %}"> {{i.item.titel|truncatechars:40}}</a>
+        </h5>
 
-        <!-- <select class="custom-select" id="selectcharge" style="float: right;" > -->
-        <!-- option + result i. name + option -->
-        <!-- </select> -->
 
-     </div>
-  </div>
-<!-- =========================== -->
-
-{% if address_info_list != None %}
-
-  {% for i in address_info_list %}
- <hr>
-  <small>Your Previous Delevery Charge Based on Devision</small>
-  <div class="row mt-3">
-    <div class="col">
-        <small class="text-muted">Subtotal</small>
-     </div>
-    <div class="col">
-       <small class="text-dark" style="float: right;">  {{order.show_cart_list_total}}</small>
+       </div>
     </div>
-  </div><hr>
+    {% endfor %}<hr>
+    <!-- =========================== -->
+    <div class="row">
+      <div class="col">
 
-  <div class="row mt-3">
-    <div class="col">
-        <small class="text-muted">Delivery Charge</small>
-     </div>
-    <div class="col">
-       <small class="text-dark" style="float: right;">{{ i.deliverycharges }}</small>
+        <div id="ajax_replace"></div> <!-- Here will replace 'checkout/ajax.html' -->
+
+       </div>
     </div>
-  </div><hr>
+    <!-- =========================== -->
 
 
-  {% if i.deliverycharges.delivery_charge == None %}
+    {% for i in address_info_list %} <!-- address_info_list loop -->
 
-  {% else %}
+    {% if i.deliverycharges != None %} <!-- if order id  greater than one rest of th code will show in front end-->
 
-  <div class="row mt-3">
-    <div class="col">
-        <small class="text-muted">Total</small>
-     </div>
-    <div class="col">
+    <hr>
+    <small>Your Previous Delevery Charge Based on Devision</small>
+    <div class="row mt-3">
+      <div class="col">
+          <small class="text-muted">Subtotal</small>
+       </div>
+      <div class="col">
+         <small class="text-dark" style="float: right;">  {{order.show_cart_list_total}}</small>
+      </div>
+    </div><hr>
 
-     <small class="text-dark" style="float: right;">{{ order.show_cart_list_total|subtract:i.deliverycharges.delivery_charge }}</small>
-     {% endif %}
+    <div class="row mt-3">
+      <div class="col">
+          <small class="text-muted">Delivery Charge</small>
+       </div>
+      <div class="col">
+         <small class="text-dark" style="float: right;">{{ i.deliverycharges }}</small>
+      </div>
+    </div><hr>
 
-    </div>
-  </div><hr>
-  {% endfor %}
 
-{% endif %}
 
-<div id="ajax_replace"></div> <!-- Here will replace 'checkout/ajax.html' -->
+    {% if i.deliverycharges.delivery_charge == None %}
 
+    {% else %}
+
+    <div class="row mt-3">
+      <div class="col">
+          <small class="text-muted">Total</small>
+       </div>
+      <div class="col">
+
+       <small class="text-dark" style="float: right;">{{ order.show_cart_list_total|subtract:i.deliverycharges.delivery_charge }}</small>
+
+    {% endif %}
+
+      </div>
+    </div><hr>
+
+    {% endif %} <!-- end greater then  -->
+ 
+    {% endfor %} <!-- End address_info_list loop-->
 
 
 </div>    
 
 
 </div>
+
+  <button type="submit" class="site-btn mb-3 mt-3">Proceed to Pay</button>
 </form>
 </div>
 </div>

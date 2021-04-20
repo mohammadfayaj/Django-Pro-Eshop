@@ -33,7 +33,7 @@ class Devision(models.Model): #country
 class Deliverycharges(models.Model): #city
     user = models.ForeignKey(User, on_delete=models.CASCADE ,blank=True, null=True)
     division_in_charge = models.ForeignKey(Devision, on_delete=models.CASCADE, blank=True, null=True)
-    delivery_charge = models.IntegerField(null=True,blank=True)    
+    delivery_charge = models.IntegerField(null=True,blank=True, default=0)    
     
     # def __str__(self):
     #     return f"{self.division_in_charge} Devision Delivary Charge {self.delivery_charge}$"

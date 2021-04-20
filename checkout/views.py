@@ -294,27 +294,32 @@ def Paypal(request):
     return render(request,'checkout/paypal.html', {'cart': order})
 
 def export_pdf(request, id):
-    # template = 'checkout/export-pdf.html'
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'inlineattachment; filename=Expenses' + str(datetime.datetime.now())+ '.pdf'
-    response['Content-Transfer-Encoding'] = 'binary'
+    try:
+        # template = 'checkout/export-pdf.html'
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'inlineattachment; filename=Expenses' + str(datetime.datetime.now())+ '.pdf'
+        response['Content-Transfer-Encoding'] = 'binary'
 
-    order = Order.objects.get(user=request.user, ordered=True, id=id)
-    # cartitem = CartItem.objects.filter(user=request.user, ordered=True,)
+        order = Order.objects.get(ordered=True, id=id)
 
-    context = {'order' : order,}
+        # cartitem = CartItem.objects.filter(user=request.user, ordered=True,)
 
-    html_string = render_to_string('checkout/export-pdf.html' , context)
-    html = HTML(string = html_string)
+        context = {'order' : order,}
 
-    result = html.write_pdf()
+        html_string = render_to_string('checkout/export-pdf.html' , context)
+        html = HTML(string = html_string)
 
-    with tempfile.NamedTemporaryFile(delete=True) as output:
-        output.write(result)
-        output.flush()
-        output.seek(0)
-        response.write(output.read())
+        result = html.write_pdf()
 
-    return response
+        with tempfile.NamedTemporaryFile(delete=True) as output:
+            output.write(result)
+            output.flush()
+            output.seek(0)
+            response.write(output.read())
+
+        return response
+        
+    except ObjectDoesNotExist:
+        messages.info,(request, f'Only Ordered True order can be export able. you are trying to export Ordered False order')
 
     # return render(request, template, context)

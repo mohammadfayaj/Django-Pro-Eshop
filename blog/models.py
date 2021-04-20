@@ -2,26 +2,42 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from phonenumber_field.modelfields import PhoneNumberField
+
 from PIL import Image
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import sys
+
 
 class HeaderImage(models.Model):
 	titel = models.CharField(max_length=150, help_text = "This titel will appear in the Image")
 	header_image = models.ImageField(upload_to="header_image")
 
-	def save(self, *args, **kwargs):
-		super().save()
-
-		img = Image.open(self.header_image.path)
-
-		if img.height > 300 or img.width > 300:
-			output_size = (1140, 1140)
-			img.thumbnail(output_size)
-			img.save(self.header_image.path)
-
-
-
 	def __str__ (self):
 		return self.titel
+
+	def save(self):
+		#Opening the uploaded image
+		img = Image.open(self.header_image) # Open Image On The Fly
+
+		if img.height > 1140 or img.width > 1140:
+			# output = BytesIO() 
+
+			#Resize/modify the image
+			output_size = (1140, 1140)
+			img.thumbnail(output_size)
+			img = img.convert('RGB')
+
+			output = BytesIO()
+			#after modifications, save it to the output
+			img.save(output, format='JPEG' ,quality=100)
+			output.seek(0)
+
+			#change the imagefield value to be the newley modifed image value
+			self.header_image = InMemoryUploadedFile(output,'ImageField', "%s.jpg" %self.header_image.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
+
+		super(HeaderImage,self).save()
+
 
 
 class BannerImage(models.Model):
@@ -31,15 +47,27 @@ class BannerImage(models.Model):
 	def __str__ (self):
 		return self.banner_title
 
-	def save(self, *args, **kwargs):
-		super().save()
+	def save(self):
+		#Opening the uploaded image
+		img = Image.open(self.banner_image) # Open Image On The Fly
 
-		img = Image.open(self.banner_image.path)
+		if img.height > 750 or img.width > 750:
+			# output = BytesIO() 
 
-		if img.height > 300 or img.width > 300:
-			output_size = (750, 240)
+			#Resize/modify the image
+			output_size = (750, 750)
 			img.thumbnail(output_size)
-			img.save(self.banner_image.path)
+			img = img.convert('RGB')
+
+			output = BytesIO()
+			#after modifications, save it to the output
+			img.save(output, format='JPEG' ,quality=100)
+			output.seek(0)
+
+			#change the imagefield value to be the newley modifed image value
+			self.banner_image = InMemoryUploadedFile(output,'ImageField', "%s.jpg" %self.banner_image.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
+
+		super(BannerImage,self).save()
 
 
 class BlogPost (models.Model):
@@ -54,15 +82,27 @@ class BlogPost (models.Model):
 		return self.blog_title
 
 
-	def save(self, *args, **kwargs):
-		super().save()
+	def save(self):
+		#Opening the uploaded image
+		img = Image.open(self.blog_image) # Open Image On The Fly
 
-		img = Image.open(self.blog_image.path)
+		if img.height > 600 or img.width > 600:
+			# output = BytesIO() 
 
-		if img.height > 300 or img.width > 300:
+			#Resize/modify the image
 			output_size = (500, 600)
 			img.thumbnail(output_size)
-			img.save(self.blog_image.path)
+			img = img.convert('RGB')
+
+			output = BytesIO()
+			#after modifications, save it to the output
+			img.save(output, format='JPEG' ,quality=100)
+			output.seek(0)
+
+			#change the imagefield value to be the newley modifed image value
+			self.blog_image = InMemoryUploadedFile(output,'ImageField', "%s.jpg" %self.blog_image.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
+
+		super(BlogPost,self).save()
 
 
 class Contact(models.Model):

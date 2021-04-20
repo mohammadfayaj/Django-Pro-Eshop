@@ -21,71 +21,71 @@
 </section>
 <!-- Breadcrumb Section End -->
 
-<!-- Shoping Cart Section Begin -->
-<section class="shoping-cart spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="shoping__cart__table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th class="shoping__product">Products</th>
-                                <th>Price</th>
-                                <th>available</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+<section class="container shoping-cart spad">
+    <table class="ui celled violet padded table">
+        <thead>
+            <tr>
+                <th>Products</th>
+                <th>Price</th>
+                <th>Available</th>
+                <th>Remove</th>
 
-                            {% if empty %}
-                            <!-- If there is no cart objects -->
-                            <table class="table mt-5">
-                                <tbody>
-                                    <tr>
-                                        <td class="h1 text-danger mt-5">{{ empty_massage }}</td>{{empty}}
-                                    </tr>
-                                </tbody>
-                            </table>
-                            {% else %}
-                            <!-- Otherwasy it will continue under this Statemant -->
+            </tr>
+        </thead>
+        <tbody>
+            {% if empty %}
+            <!-- If there is no Wish objects -->
+            <table class="table mt-5">
+                <tbody>
+                    <tr>
+                        <td class="h1 text-danger mt-5">{{ empty_massage }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% else %}
+            <!-- Otherwasy it will continue under this Statemant -->
+                {% for i in wishlist %}
+                <!-- Start For loop -->
+                <tr>
+                    <td>
+                        <h5 class="ui aligned header">
+                            <img src="{{ i.item.images.url }}" class="ui small rounded image">
+                            <a class="text-dark" href="{% url 'shop:product-details' i.item.slug %}"> {{i.item.titel|truncatechars:40}}</a>
+                        </h5>
+                    </td>
 
+                    <td>$ {{ i.item.price }}</td>
+                    {% if i.item.quantity > 0 %}
+                    <td>
+                        Product Is Available 
+                        <a class="text-primery ui horizontal label violet" href="{% url 'shop:product-details' i.item.slug %}">Check Now</a>
+                    </td>
+                    {% else %}
+                        <td> <span class="ui horizontal label violet">Out of stock</span></td>
+                    {% endif %}
+                    <td>
+                        <a class="btn btn-md" href="{% url 'cart:remove_wish_list' i.id %}"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
 
-                            {% for i in wishlist %}
-                            <!-- Start For loop -->
-                            <tr>
-                                <td class="shoping__cart__item">
-                                    <img style="width: 100px; height: 100px;" src="{{ i.item.images.url }}" alt="">
-                                    <h5><a class="text-dark"
-                                            href="{% url 'shop:product-details' i.item.slug %}">{{i.item.titel}}</a>
-                                    </h5>
-                                </td>
+            </tbody>
 
-                                <td class="shoping__cart__price">$ {{ i.item.price }}</td>
-                                
-                                <td class="">
-                                    <a class="btn btn-md" href="{% url 'cart:remove_wish_list' i.id %}"><i
-                                            class="fas fa-trash-alt"></i></a>
-                                </td>
-                            </tr>
+            {% empty %}
+            <!-- If there is no cart objects -->
+            <tr>
+                <td class="h1">Your Wish List Is Empty</td>
+            </tr>
+            {% endfor %}
+            <!-- End For Loop -->
+            {% endif %}
+        </tbody>
 
-                        </tbody>
+        <tfoot>
+        </tfoot>
 
-                        {% empty %}
-                        <!-- If there is no cart objects -->
-                        <tr>
-                            <td class="h1">Your Wish List Is Empty</td>
-                        </tr>
-                        {% endfor %}
-                        <!-- End For Loop -->
+    </table>
 
-                    </table>
-                </div>
-            </div>
-        </div>
-
-    </div>
 </section>
-<!-- Shoping Cart Section End -->
-{% endif %}
-<!-- End If Statemant [This is come from line 7] -->
+
+
 {% endblock %}

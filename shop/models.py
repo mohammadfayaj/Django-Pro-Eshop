@@ -10,7 +10,13 @@ from ast import literal_eval# literal_eval, turns your string into an actual lis
 from star_ratings.models import Rating
 from users.models import Profile
 import uuid
+
 from PIL import Image
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import sys
+
+from notifications.signals import notify
 
 class Category(MPTTModel):
     name = models.CharField(max_length=200)
@@ -30,17 +36,30 @@ class Category(MPTTModel):
     class Meta:
         verbose_name_plural = 'Categories'
 
-    def save(self, *args, **kwargs):
-        super().save()
-
-        if self.image != None:
-
-            img = Image.open(self.image.path)
+    def category_save(self):
+        if self.image is not None:
+            #Opening the uploaded image
+            img = Image.open(self.image) # Open Image On The Fly
 
             if img.height > 300 or img.width > 300:
+                # output = BytesIO() 
+
+                #Resize/modify the image
                 output_size = (300, 300)
                 img.thumbnail(output_size)
-                img.save(self.image.path)
+                img = img.convert('RGB')
+
+                output = BytesIO()
+                #after modifications, save it to the output
+                img.save(output, format='JPEG' ,quality=100)
+                output.seek(0)
+
+                #change the imagefield value to be the newley modifed image value
+                self.image = InMemoryUploadedFile(output,'ImageField', "%s.jpg" %self.image.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
+
+            super(Category,self).save()
+        else:
+            super(Category,self).save()
 
 
 AVAILABILITY = (
@@ -90,6 +109,7 @@ class ProductItem(models.Model,):
     categorys = TreeForeignKey(Category, blank=True, null=True , on_delete =models.CASCADE)
     ratings = GenericRelation(Rating, related_query_name='foos')
 
+
     def __str__(self):
         return self.titel
 
@@ -112,15 +132,29 @@ class ProductItem(models.Model,):
         colors = literal_eval(self.colors)
         return colors
 
-    def save(self, *args, **kwargs):
-        super().save()
+    def save(self):
+        if self.images:
+            #Opening the uploaded image
+            img = Image.open(self.images) # Open Image On The Fly
 
-        img = Image.open(self.images.path)
+            if img.height > 500 or img.width > 500:
+                # output = BytesIO() 
 
-        if img.height > 300 or img.width > 300:
-            output_size = (500, 600)
-            img.thumbnail(output_size)
-            img.save(self.images.path)
+                #Resize/modify the images
+                output_size = (500, 500)
+                img.thumbnail(output_size)
+                img = img.convert('RGB')
+
+                output = BytesIO()
+                #after modifications, save it to the output
+                img.save(output, format='JPEG' ,quality=100)
+                output.seek(0)
+
+                #change the imagesfield value to be the newley modifed images value
+                self.images = InMemoryUploadedFile(output,'ImageField', "%s.jpg" %self.images.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
+
+            super(ProductItem,self).save()
+
 
 
 class Reviews(MPTTModel):
@@ -148,15 +182,32 @@ class Reviews(MPTTModel):
         #Reviw will only show 40 Alphabet in admin
         return truncatechars(self.review, 40)
 
-    def save(self, *args, **kwargs):
-        super().save()
+    def save(self):
+        super(Reviews,self).save()
 
-        if self.image != None:
-            img = Image.open(self.image.path)
-            if img.height > 300 or img.width > 300:
+        if self.image:
+            #Opening the uploaded image
+            img = Image.open(self.image) # Open Image On The Fly
+
+            if img.height > 400 or img.width > 400:
+                # output = BytesIO() 
+
+                #Resize/modify the image
                 output_size = (400, 400)
                 img.thumbnail(output_size)
-                img.save(self.image.path)
+                img = img.convert('RGB')
+
+                output = BytesIO()
+                #after modifications, save it to the output
+                img.save(output, format='JPEG' ,quality=100)
+                output.seek(0)
+
+                #change the imagefield value to be the newley modifed image value
+                self.image = InMemoryUploadedFile(output,'ImageField', "%s.jpg" %self.image.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
+
+            super(Reviews,self).save()
+        
+
 
 
 

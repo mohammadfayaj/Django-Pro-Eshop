@@ -6,17 +6,16 @@ from .models import Notification
 
 class NotificationAdmin(admin.ModelAdmin):
     fields = (
-
 		('unread','public','deleted','emailed',),
-		('image'),('level'),('recipient'),('actor_content_type'),('actor_object_id'),('verb'),('description'),
+		('image'),('level'),('recipient'),('attach_url'),('actor_content_type'),('actor_object_id'),('verb'),('description'),
 		('target_object_id'),('target_content_type'),('action_object_content_type'),('action_object_object_id'),
 		('timestamp'),
-		# ('data'),
+		('notification_slug'),#('data')
 
-           )
-    # raw_id_fields = ('recipient',)
-    list_display = ('actor',
-                    'level', 'target', 'unread', 'public')
+        )
+
+    # raw_id_fields = ('',) # to display manytomany field in rew mood
+    list_display = ('actor', 'verb', 'level', 'target', 'unread', 'public')
     list_filter = ('level', 'unread', 'public', 'timestamp',)
 
     def get_queryset(self, request):

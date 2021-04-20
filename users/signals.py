@@ -6,6 +6,9 @@ from .models import Profile, Address
 from django.conf import settings
 from rest_framework.authtoken.models import Token
 
+from notifications.signals import notify
+from shop.models import ProductItem
+
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
